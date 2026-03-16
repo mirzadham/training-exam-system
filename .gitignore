@@ -1,0 +1,29 @@
+# Environment & secrets
+.env
+config/database.local.php
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.gemini/
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Logs & temp
+*.log
+storage/logs/*
+storage/exports/*
+!storage/logs/.gitkeep
+!storage/exports/.gitkeep
+
+# PHP
+vendor/
+
+# Prompt files (development reference only)
+prompt/

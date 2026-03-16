@@ -1,0 +1,95 @@
+/*
+ * Training Exam System — Custom Styles
+ * 
+ * Supplements Bootstrap 5. Keep this minimal and organized.
+ */
+
+/* ---- Global ---- */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+main {
+    flex: 1;
+}
+
+/* ---- Navbar ---- */
+.navbar-brand {
+    font-weight: 600;
+}
+
+/* ---- Cards ---- */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* ---- Admin Dashboard Stats ---- */
+.stat-card {
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-card .stat-icon {
+    font-size: 2rem;
+    opacity: 0.7;
+}
+
+/* ---- Tables ---- */
+.table th {
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    color: #6c757d;
+}
+
+/* ---- Forms ---- */
+.form-label {
+    font-weight: 500;
+}
+
+/* ---- Exam Timer ---- */
+.exam-timer {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.exam-timer.warning {
+    color: #dc3545;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ---- Exam Progress ---- */
+.question-nav-btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 0.875rem;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 0.375rem;
+}
+
+/* ---- Result Badge ---- */
+.result-badge {
+    font-size: 1rem;
+    padding: 0.5em 1em;
+}
+
+/* ---- Utility ---- */
+.cursor-pointer {
+    cursor: pointer;
+}

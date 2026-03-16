@@ -1,0 +1,30 @@
+# Deny direct access to non-public files
+# URL rewriting is NOT used — each PHP file is accessed directly
+
+# Prevent directory listing
+Options -Indexes
+
+# Deny access to sensitive files
+<FilesMatch "\.(env|md|sql|gitignore)$">
+    Require all denied
+</FilesMatch>
+
+# Deny access to helper/config directories
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^config/ - [F,L]
+    RewriteRule ^models/ - [F,L]
+    RewriteRule ^controllers/ - [F,L]
+    RewriteRule ^helpers/ - [F,L]
+    RewriteRule ^database/ - [F,L]
+    RewriteRule ^storage/ - [F,L]
+    RewriteRule ^views/ - [F,L]
+    RewriteRule ^prompt/ - [F,L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
