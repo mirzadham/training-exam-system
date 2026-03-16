@@ -1,0 +1,134 @@
+<?php
+/**
+ * Admin Login Page
+ * 
+ * Entry point for admin authentication.
+ * If already logged in, redirect to dashboard.
+ */
+
+require_once __DIR__ . '/../init.php';
+require_once CONTROLLERS_PATH . '/AuthController.php';
+
+// Redirect if already logged in
+if (isAdminLoggedIn()) {
+    redirect(url('admin/'));
+}
+
+// Handle form submission
+$error = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    $result = AuthController::login($username, $password);
+
+    if ($result['success']) {
+        setFlash('success', 'Welcome back, ' . e(getAdminName()) . '!');
+        redirect(url('admin/'));
+    } else {
+        $error = $result['error'];
+    }
+}
+
+$pageTitle = 'Admin Login';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= e($pageTitle) ?> — <?= e(APP_NAME) ?></title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+          rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" 
+          rel="stylesheet">
+    <link href="<?= asset('css/style.css') ?>" rel="stylesheet">
+
+    <style>
+        .login-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            border: none;
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+    <div class="card login-card">
+        <div class="card-body p-4 p-md-5">
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <i class="bi bi-clipboard-check display-4 text-primary"></i>
+                <h4 class="mt-2 fw-bold"><?= e(APP_NAME) ?></h4>
+                <p class="text-muted">Admin Login</p>
+            </div>
+
+            <!-- Error Message -->
+            <?php if ($error): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i><?= e($error) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+
+            <!-- Login Form -->
+            <form method="POST" action="" novalidate>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" 
+                               class="form-control" 
+                               id="username" 
+                               name="username" 
+                               value="<?= e($_POST['username'] ?? '') ?>"
+                               placeholder="Enter your username"
+                               required 
+                               autofocus>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="password" 
+                               class="form-control" 
+                               id="password" 
+                               name="password" 
+                               placeholder="Enter your password"
+                               required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                </button>
+            </form>
+
+            <!-- Back Link -->
+            <div class="text-center mt-4">
+                <a href="<?= url('/') ?>" class="text-muted text-decoration-none">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+        crossorigin="anonymous"></script>
+</body>
+</html>
