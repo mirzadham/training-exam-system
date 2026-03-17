@@ -15,7 +15,7 @@
           rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="<?= asset('css/style.css') ?>" rel="stylesheet">
+    <link href="<?= asset('css/style.css') ?>?v=<?= filemtime(__DIR__ . '/../../assets/css/style.css') ?>" rel="stylesheet">
 </head>
 <body>
 
