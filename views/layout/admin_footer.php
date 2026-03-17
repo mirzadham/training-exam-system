@@ -13,6 +13,6 @@
         crossorigin="anonymous"></script>
 
 <!-- Custom JS -->
-<script src="<?= asset('js/app.js') ?>"></script>
+<script src="<?= asset('js/app.js') ?>?v=<?= filemtime(__DIR__ . '/../../assets/js/app.js') ?>"></script>
 </body>
 </html>
