@@ -101,6 +101,14 @@ if ($currentQ > $totalQuestions) {
 $currentAnswer = ExamAttempt::getAnswerByOrder($attempt['id'], $currentQ);
 
 if (!$currentAnswer) {
+    // If the question really doesn't exist (e.g., admin deleted all questions),
+    // and we can't even load q=1, then gracefully auto-submit the exam to avoid an infinite redirect loop.
+    if ($currentQ === 1) {
+        ExamAttempt::submit($attempt['id'], 'submitted');
+        setFlash('error', 'The questions for this exam are no longer available. Your exam has been auto-submitted.');
+        redirect(url('result.php'));
+    }
+
     setFlash('error', 'Question not found.');
     redirect(url('exam.php?q=1'));
 }
