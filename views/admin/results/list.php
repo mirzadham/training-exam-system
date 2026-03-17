@@ -2,7 +2,11 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-bar-chart-steps me-2"></i>Exam Results</h2>
-    <!-- CSV Export will be implemented in Phase 8 (Reporting) -->
+    <div>
+        <a href="<?= url('admin/results.php?' . http_build_query(array_merge($_GET, ['export' => 'csv']))) ?>" class="btn btn-success">
+            <i class="bi bi-file-earmark-spreadsheet me-1"></i>Export to CSV
+        </a>
+    </div>
 </div>
 
 <!-- Search & Filter -->

@@ -2,6 +2,11 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-people me-2"></i>Participants</h2>
+    <div>
+        <a href="<?= url('admin/participants.php?' . http_build_query(array_merge($_GET, ['export' => 'csv']))) ?>" class="btn btn-success">
+            <i class="bi bi-file-earmark-spreadsheet me-1"></i>Export to CSV
+        </a>
+    </div>
 </div>
 
 <!-- Search & Filter -->
