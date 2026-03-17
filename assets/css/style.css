@@ -18,6 +18,7 @@
 
     /* Subtle background tweaks only */
     --bs-body-bg: var(--mimos-bg);
+    --bs-body-font-family: "din-round", sans-serif;
 }
 
 /* ---- Global Typography & Layout ---- */
@@ -26,6 +27,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background-color: var(--bs-body-bg);
+    font-family: var(--bs-body-font-family);
 }
 
 main {
