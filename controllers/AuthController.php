@@ -45,29 +45,31 @@ class AuthController
         return ['success' => true, 'error' => null];
     }
 
-    /**
-     * Process logout
-     */
     public static function logout(): void
     {
-        // Clear all session data
-        $_SESSION = [];
+        // Clear only admin session data
+        unset($_SESSION['admin_id']);
+        unset($_SESSION['admin_name']);
+        unset($_SESSION['admin_username']);
 
-        // Destroy the session cookie
-        if (ini_get('session.use_cookies')) {
-            $params = session_get_cookie_params();
-            setcookie(
-                session_name(),
-                '',
-                time() - 42000,
-                $params['path'],
-                $params['domain'],
-                $params['secure'],
-                $params['httponly']
-            );
+        // Destroy the entire session only if a participant is not currently taking an exam
+        if (empty($_SESSION['participant_id'])) {
+            // Destroy the session cookie
+            if (ini_get('session.use_cookies')) {
+                $params = session_get_cookie_params();
+                setcookie(
+                    session_name(),
+                    '',
+                    time() - 42000,
+                    $params['path'],
+                    $params['domain'],
+                    $params['secure'],
+                    $params['httponly']
+                );
+            }
+
+            // Destroy the session
+            session_destroy();
         }
-
-        // Destroy the session
-        session_destroy();
     }
 }
