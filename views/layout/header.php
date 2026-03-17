@@ -30,29 +30,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <?php if (isAdminLoggedIn()): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= url('admin/') ?>">
-                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <span class="nav-link text-dark">
-                            <i class="bi bi-person-circle me-1"></i><?= e(getAdminName()) ?>
-                        </span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= url('admin/logout.php') ?>">
-                            <i class="bi bi-box-arrow-right me-1"></i>Logout
-                        </a>
-                    </li>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= url('/') ?>">
-                            <i class="bi bi-house me-1"></i>Home
-                        </a>
-                    </li>
-                <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= url('/') ?>">
+                        <i class="bi bi-house me-1"></i>Home
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
