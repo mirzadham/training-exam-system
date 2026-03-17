@@ -133,18 +133,38 @@ $progressPercent = $totalQuestions > 0 ? round(($answeredCount / $totalQuestions
 
                 <!-- Submit Button -->
                 <hr>
-                <form method="POST" action="<?= url('submit_exam.php') ?>"
-                      onsubmit="return confirm('Are you sure you want to submit? You cannot change your answers after submission.\n\nAnswered: <?= $answeredCount ?>/<?= $totalQuestions ?>');">
+                <form method="POST" action="<?= url('submit_exam.php') ?>" id="submit-exam-form">
                     <?= csrf_field() ?>
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-danger">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#submitExamModal">
                             <i class="bi bi-send me-1"></i>Submit Exam
                         </button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
+</div>
+
+<!-- Submit Exam Modal -->
+<div class="modal fade" id="submitExamModal" tabindex="-1" aria-labelledby="submitExamModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="submitExamModalLabel">Submit Exam</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to submit? You cannot change your answers after submission.</p>
+        <p class="mb-0">Answered: <strong><?= $answeredCount ?></strong> / <?= $totalQuestions ?></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" onclick="document.getElementById('submit-exam-form').submit();">Submit Exam</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Timer & Auto-save JavaScript -->
@@ -174,6 +194,13 @@ $progressPercent = $totalQuestions > 0 ? round(($answeredCount / $totalQuestions
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = '<?= url('submit_exam.php') ?>';
+            
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrf_token';
+            csrfInput.value = document.getElementById('csrf_token_field').value;
+            form.appendChild(csrfInput);
+            
             document.body.appendChild(form);
             form.submit();
             return;
