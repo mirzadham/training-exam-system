@@ -23,7 +23,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="<?= url('/') ?>">
-            <img src="<?= asset('img/logo_mimos_academy.png') ?>" alt="MIMOS Academy Logo" height="40" class="me-2 bg-white rounded p-1">
+            <img src="<?= url('assets/img/logo_mimos_academy.png') ?>" alt="MIMOS Academy Logo" height="40" class="me-2 bg-white rounded p-1">
             <span class="d-none d-sm-inline"><?= e(APP_NAME) ?></span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
