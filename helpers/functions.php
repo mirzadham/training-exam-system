@@ -42,19 +42,25 @@ function asset(string $path): string
  * Flash message helpers (session-based)
  * Used to show success/error messages after redirects.
  */
-function setFlash(string $type, string $message): void
+function setFlash(string $type, string $message, string $namespace = ''): void
 {
-    $_SESSION['flash'] = [
+    if ($namespace === '') {
+        $namespace = strpos($_SERVER['REQUEST_URI'] ?? '', '/admin/') !== false ? 'admin' : 'public';
+    }
+    $_SESSION['flash_' . $namespace] = [
         'type'    => $type,
         'message' => $message,
     ];
 }
 
-function getFlash(): ?array
+function getFlash(string $namespace = ''): ?array
 {
-    if (isset($_SESSION['flash'])) {
-        $flash = $_SESSION['flash'];
-        unset($_SESSION['flash']);
+    if ($namespace === '') {
+        $namespace = strpos($_SERVER['REQUEST_URI'] ?? '', '/admin/') !== false ? 'admin' : 'public';
+    }
+    if (isset($_SESSION['flash_' . $namespace])) {
+        $flash = $_SESSION['flash_' . $namespace];
+        unset($_SESSION['flash_' . $namespace]);
         return $flash;
     }
     return null;

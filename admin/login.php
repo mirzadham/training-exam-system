@@ -77,6 +77,15 @@ $pageTitle = 'Admin Login';
                 <p class="text-muted">Admin Login</p>
             </div>
 
+            <!-- Flash Messages -->
+            <?php $flash = getFlash(); ?>
+            <?php if ($flash): ?>
+                <div class="alert alert-<?= $flash['type'] === 'error' ? 'danger' : e($flash['type']) ?> alert-dismissible fade show" role="alert">
+                    <i class="bi bi-info-circle me-2"></i><?= e($flash['message']) ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+
             <!-- Error Message -->
             <?php if ($error): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -134,5 +143,8 @@ $pageTitle = 'Admin Login';
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
         crossorigin="anonymous"></script>
+
+<!-- Custom JS -->
+<script src="<?= asset('js/app.js') ?>?v=<?= filemtime(__DIR__ . '/../assets/js/app.js') ?>"></script>
 </body>
 </html>
