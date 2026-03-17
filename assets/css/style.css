@@ -1,7 +1,8 @@
 /*
  * Training Exam System — MIMOS Academy Theme
  * 
- * Overrides Bootstrap 5 defaults with the MIMOS Academy corporate branding.
+ * Applies MIMOS Academy corporate branding to structural elements (headers/footers)
+ * while preserving standard Bootstrap UI UX for interactive components.
  */
 
 :root {
@@ -15,14 +16,8 @@
     --mimos-border: #D9D4DC;
     --mimos-text-muted: #6E6470;
 
-    /* Bootstrap 5 Overrides */
-    --bs-primary: var(--mimos-primary);
-    --bs-primary-rgb: 164, 34, 141;
+    /* Subtle background tweaks only */
     --bs-body-bg: var(--mimos-bg);
-    --bs-dark: var(--mimos-dark);
-    --bs-dark-rgb: 11, 11, 15;
-    --bs-border-color: var(--mimos-border);
-    --bs-secondary: var(--mimos-text-muted);
 }
 
 /* ---- Global Typography & Layout ---- */
@@ -31,7 +26,6 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background-color: var(--bs-body-bg);
-    color: var(--mimos-dark);
 }
 
 main {
@@ -42,7 +36,8 @@ text-muted {
     color: var(--mimos-text-muted) !important;
 }
 
-/* ---- Navbar (Branded Gradient) ---- */
+/* ---- Brand Header / Navbar ---- */
+/* Apply the brand color only to the main headers, leaving buttons standard */
 .navbar.bg-dark {
     background: linear-gradient(135deg, var(--mimos-primary) 0%, var(--mimos-primary-hover) 45%, var(--mimos-primary-dark) 100%) !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -54,60 +49,10 @@ text-muted {
     letter-spacing: 0.5px;
 }
 
-/* ---- Buttons ---- */
-.btn-primary {
-    background-color: var(--mimos-primary) !important;
-    border-color: var(--mimos-primary) !important;
-    color: #ffffff !important;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
-
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-    background-color: var(--mimos-primary-hover) !important;
-    border-color: var(--mimos-primary-hover) !important;
-    box-shadow: 0 4px 8px rgba(164, 34, 141, 0.3) !important;
-}
-
-.btn-outline-primary {
-    color: var(--mimos-primary) !important;
-    border-color: var(--mimos-primary) !important;
-}
-
-.btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
-    background-color: var(--mimos-primary) !important;
-    color: #ffffff !important;
-}
-
-/* ---- Bootstrap Utilities & Global Colors ---- */
-.text-primary, 
-.bi-building.text-primary, 
-.bi-speedometer2,
-.bi-collection,
-.bi-question-circle,
-.bi-people,
-.bi-bar-chart {
-    color: var(--mimos-primary) !important;
-}
-
-.bg-primary {
-    background-color: var(--mimos-primary) !important;
-}
-
-.border-primary {
-    border-color: var(--mimos-primary) !important;
-}
-
 /* ---- Forms & Inputs ---- */
 .form-label {
     font-weight: 600;
     color: var(--mimos-dark);
-    margin-bottom: 0.35rem;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: var(--mimos-primary);
-    box-shadow: 0 0 0 0.25rem rgba(164, 34, 141, 0.25);
 }
 
 /* ---- Cards ---- */
@@ -133,13 +78,6 @@ text-muted {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-.bg-primary.bg-opacity-10 {
-    background-color: rgba(164, 34, 141, 0.1) !important;
-}
-.text-primary, .bi-building.text-primary, .bi-speedometer2 {
-    color: var(--mimos-primary) !important;
-}
-
 /* ---- Tables ---- */
 .table {
     --bs-table-bg: transparent;
@@ -158,23 +96,6 @@ text-muted {
 .table td {
     vertical-align: middle;
     border-bottom: 1px solid var(--mimos-border);
-}
-
-/* ---- Pagination & Links ---- */
-a {
-    color: var(--mimos-primary);
-    text-decoration: none;
-}
-a:hover {
-    color: var(--mimos-primary-hover);
-}
-
-.page-link {
-    color: var(--mimos-primary);
-}
-.page-item.active .page-link {
-    background-color: var(--mimos-primary);
-    border-color: var(--mimos-primary);
 }
 
 /* ---- Exam Timer ---- */
@@ -205,20 +126,7 @@ a:hover {
     border-radius: 0.375rem;
 }
 
-.question-nav-btn.btn-primary {
-    background-color: var(--mimos-primary) !important;
-    border-color: var(--mimos-primary) !important;
-    color: #fff !important;
-}
-.question-nav-btn.btn-outline-primary {
-    color: var(--mimos-primary) !important;
-    border-color: var(--mimos-primary) !important;
-}
-
 /* ---- General Utilities ---- */
 .cursor-pointer {
     cursor: pointer;
-}
-.badge.bg-primary {
-    background-color: var(--mimos-primary) !important;
 }
