@@ -51,16 +51,13 @@ class Participant
     {
         $pdo = getDBConnection();
         $stmt = $pdo->prepare(
-            "INSERT INTO participants (full_name, ic_number, organization_id, email, phone, course_name)
-             VALUES (:full_name, :ic_number, :organization_id, :email, :phone, :course_name)"
+            "INSERT INTO participants (full_name, ic_number, organization_id)
+             VALUES (:full_name, :ic_number, :organization_id)"
         );
         $stmt->execute([
             'full_name'       => $data['full_name'],
             'ic_number'       => preg_replace('/[^0-9]/', '', $data['ic_number']),
             'organization_id' => (int) $data['organization_id'],
-            'email'           => !empty($data['email']) ? $data['email'] : null,
-            'phone'           => !empty($data['phone']) ? $data['phone'] : null,
-            'course_name'     => !empty($data['course_name']) ? $data['course_name'] : null,
         ]);
         return (int) $pdo->lastInsertId();
     }

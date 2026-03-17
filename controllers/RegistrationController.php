@@ -45,15 +45,6 @@ class RegistrationController
             }
         }
 
-        // Email — optional but must be valid if provided
-        if (!empty($data['email']) && !isValidEmail($data['email'])) {
-            $errors['email'] = 'Please enter a valid email address.';
-        }
-
-        // Phone — optional, basic check
-        if (!empty($data['phone']) && !preg_match('/^[\d\s\+\-()]{7,20}$/', $data['phone'])) {
-            $errors['phone'] = 'Please enter a valid phone number.';
-        }
 
         return $errors;
     }

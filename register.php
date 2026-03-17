@@ -22,9 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'full_name'       => trim($_POST['full_name'] ?? ''),
             'ic_number'       => trim($_POST['ic_number'] ?? ''),
             'organization_id' => $_POST['organization_id'] ?? '',
-            'email'           => trim($_POST['email'] ?? ''),
-            'phone'           => trim($_POST['phone'] ?? ''),
-            'course_name'     => trim($_POST['course_name'] ?? ''),
         ];
 
         $result = RegistrationController::register($data);
@@ -119,55 +116,7 @@ require_once VIEWS_PATH . '/layout/header.php';
                         </div>
                     </div>
 
-                    <hr class="my-4">
-                    <p class="text-muted"><small><i class="bi bi-info-circle me-1"></i>The following fields are optional.</small></p>
 
-                    <div class="row">
-                        <!-- Email -->
-                        <div class="col-md-6 mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email"
-                                       class="form-control <?= isset($errors['email']) ? 'is-invalid' : '' ?>"
-                                       id="email" name="email"
-                                       value="<?= e($data['email'] ?? '') ?>"
-                                       placeholder="your.email@example.com">
-                                <?php if (isset($errors['email'])): ?>
-                                    <div class="invalid-feedback"><?= e($errors['email']) ?></div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
-                        <!-- Phone -->
-                        <div class="col-md-6 mb-3">
-                            <label for="phone" class="form-label">Phone</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                <input type="tel"
-                                       class="form-control <?= isset($errors['phone']) ? 'is-invalid' : '' ?>"
-                                       id="phone" name="phone"
-                                       value="<?= e($data['phone'] ?? '') ?>"
-                                       placeholder="e.g. 01234567890">
-                                <?php if (isset($errors['phone'])): ?>
-                                    <div class="invalid-feedback"><?= e($errors['phone']) ?></div>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Course Name -->
-                    <div class="mb-4">
-                        <label for="course_name" class="form-label">Course / Program Name</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-book"></i></span>
-                            <input type="text"
-                                   class="form-control"
-                                   id="course_name" name="course_name"
-                                   value="<?= e($data['course_name'] ?? '') ?>"
-                                   placeholder="e.g. Workplace Safety Training">
-                        </div>
-                    </div>
 
                     <!-- Submit -->
                     <div class="d-grid">

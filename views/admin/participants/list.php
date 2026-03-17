@@ -58,9 +58,7 @@
                             <th>Full Name</th>
                             <th>IC Number</th>
                             <th>Organization</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Course</th>
+
                             <th>Registered</th>
                         </tr>
                     </thead>
@@ -74,9 +72,7 @@
                                     <span class="badge bg-secondary"><?= e($p['organization_code']) ?></span>
                                     <?= e($p['organization_name']) ?>
                                 </td>
-                                <td><?= $p['email'] ? e($p['email']) : '<span class="text-muted">—</span>' ?></td>
-                                <td><?= $p['phone'] ? e($p['phone']) : '<span class="text-muted">—</span>' ?></td>
-                                <td><?= $p['course_name'] ? e($p['course_name']) : '<span class="text-muted">—</span>' ?></td>
+
                                 <td><small><?= date('d M Y H:i', strtotime($p['created_at'])) ?></small></td>
                             </tr>
                         <?php endforeach; ?>

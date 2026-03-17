@@ -22,7 +22,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     
     $output = fopen('php://output', 'w');
     // Header row
-    fputcsv($output, ['Full Name', 'IC Number', 'Organization', 'Email', 'Phone', 'Course Name', 'Registered At']);
+    fputcsv($output, ['Full Name', 'IC Number', 'Organization', 'Registered At']);
     
     // Data rows
     foreach ($participants as $p) {
@@ -30,9 +30,7 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
             $p['full_name'],
             $p['ic_number'],
             $p['organization_name'],
-            $p['email'],
-            $p['phone'],
-            $p['course_name'],
+
             $p['created_at']
         ]);
     }

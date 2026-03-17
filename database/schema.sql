@@ -74,9 +74,7 @@ CREATE TABLE IF NOT EXISTS `participants` (
     `full_name` VARCHAR(255) NOT NULL,
     `ic_number` VARCHAR(20) NOT NULL UNIQUE,
     `organization_id` INT NOT NULL,
-    `email` VARCHAR(255) NULL,
-    `phone` VARCHAR(20) NULL,
-    `course_name` VARCHAR(255) NULL,
+
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`organization_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
