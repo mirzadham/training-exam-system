@@ -73,8 +73,7 @@ $pageTitle = 'Admin Login';
         <div class="card-body p-4 p-md-5">
             <!-- Header -->
             <div class="text-center mb-4">
-                <i class="bi bi-clipboard-check display-4 text-primary"></i>
-                <h4 class="mt-2 fw-bold"><?= e(APP_NAME) ?></h4>
+                <img src="<?= asset('img/logo.png') ?>" alt="MIMOS Academy Logo" style="width: 240px; height: 80px; object-fit: cover; object-position: center;" class="mb-3 rounded">
                 <p class="text-muted">Admin Login</p>
             </div>
 

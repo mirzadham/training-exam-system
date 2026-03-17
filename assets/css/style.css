@@ -10,7 +10,7 @@
     --mimos-primary: #A4228D;
     --mimos-primary-hover: #8C2677;
     --mimos-primary-dark: #5E1F53;
-    
+
     --mimos-dark: #0B0B0F;
     --mimos-bg: #F8F6F9;
     --mimos-border: #D9D4DC;
@@ -41,14 +41,29 @@ text-muted {
 /* ---- Brand Header / Navbar ---- */
 /* Apply the brand color only to the main headers, leaving buttons standard */
 .navbar.bg-dark {
-    background: linear-gradient(135deg, var(--mimos-primary) 0%, var(--mimos-primary-hover) 45%, var(--mimos-primary-dark) 100%) !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-bottom: 3px solid rgba(255,255,255,0.1);
+    background: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid var(--mimos-primary);
+}
+
+.navbar-brand,
+.nav-link,
+.navbar-brand small {
+    color: var(--mimos-dark) !important;
+}
+
+.nav-link:hover {
+    color: var(--mimos-primary) !important;
 }
 
 .navbar-brand {
     font-weight: 700;
     letter-spacing: 0.5px;
+}
+
+/* Navbar Toggle for Light Header */
+.navbar-toggler:focus {
+    box-shadow: none;
 }
 
 /* ---- Forms & Inputs ---- */
@@ -113,8 +128,15 @@ text-muted {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
 }
 
 /* ---- Exam Progress Nav ---- */
