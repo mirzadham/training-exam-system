@@ -6,6 +6,9 @@
  * Keep business rules here so they are easy to find and change.
  */
 
+// Set Default Timezone for Malaysia (fixes 8 hour timer offset)
+date_default_timezone_set('Asia/Kuala_Lumpur');
+
 // Application
 define('APP_NAME', 'Training Exam System');
 define('APP_VERSION', '1.0.0');
