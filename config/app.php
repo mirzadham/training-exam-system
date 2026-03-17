@@ -11,8 +11,8 @@ define('APP_NAME', 'Training Exam System');
 define('APP_VERSION', '1.0.0');
 
 // Base URL — update for production
-// For Laragon, this typically works as-is via virtual host
-define('BASE_URL', '/training-exam-system');
+// For Laragon (.test domains), this should be empty
+define('BASE_URL', '');
 
 // Paths
 define('ROOT_PATH', dirname(__DIR__));
