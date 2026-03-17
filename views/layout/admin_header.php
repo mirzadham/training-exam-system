@@ -22,8 +22,9 @@
 <!-- Admin Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="<?= url('admin/') ?>">
-            <i class="bi bi-clipboard-check me-2"></i><?= e(APP_NAME) ?> <small class="text-muted">Admin</small>
+        <a class="navbar-brand d-flex align-items-center" href="<?= url('admin/') ?>">
+            <img src="<?= asset('img/logo_mimos_academy.png') ?>" alt="MIMOS Academy Logo" height="40" class="me-2 bg-white rounded p-1">
+            <span class="d-none d-sm-inline"><?= e(APP_NAME) ?> <small class="text-white-50 ms-1" style="font-size: 0.8em;">Admin</small></span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
             <span class="navbar-toggler-icon"></span>
