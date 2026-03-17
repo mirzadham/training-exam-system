@@ -56,9 +56,9 @@ text-muted {
 
 /* ---- Buttons ---- */
 .btn-primary {
-    background-color: var(--mimos-primary);
-    border-color: var(--mimos-primary);
-    color: #ffffff;
+    background-color: var(--mimos-primary) !important;
+    border-color: var(--mimos-primary) !important;
+    color: #ffffff !important;
     font-weight: 500;
     transition: all 0.2s ease;
 }
@@ -66,17 +66,36 @@ text-muted {
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
     background-color: var(--mimos-primary-hover) !important;
     border-color: var(--mimos-primary-hover) !important;
-    box-shadow: 0 4px 8px rgba(164, 34, 141, 0.3);
+    box-shadow: 0 4px 8px rgba(164, 34, 141, 0.3) !important;
 }
 
 .btn-outline-primary {
-    color: var(--mimos-primary);
-    border-color: var(--mimos-primary);
+    color: var(--mimos-primary) !important;
+    border-color: var(--mimos-primary) !important;
 }
 
 .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active {
-    background-color: var(--mimos-primary);
-    color: #ffffff;
+    background-color: var(--mimos-primary) !important;
+    color: #ffffff !important;
+}
+
+/* ---- Bootstrap Utilities & Global Colors ---- */
+.text-primary, 
+.bi-building.text-primary, 
+.bi-speedometer2,
+.bi-collection,
+.bi-question-circle,
+.bi-people,
+.bi-bar-chart {
+    color: var(--mimos-primary) !important;
+}
+
+.bg-primary {
+    background-color: var(--mimos-primary) !important;
+}
+
+.border-primary {
+    border-color: var(--mimos-primary) !important;
 }
 
 /* ---- Forms & Inputs ---- */
@@ -187,13 +206,13 @@ a:hover {
 }
 
 .question-nav-btn.btn-primary {
-    background-color: var(--mimos-primary);
-    border-color: var(--mimos-primary);
-    color: #fff;
+    background-color: var(--mimos-primary) !important;
+    border-color: var(--mimos-primary) !important;
+    color: #fff !important;
 }
 .question-nav-btn.btn-outline-primary {
-    color: var(--mimos-primary);
-    border-color: var(--mimos-primary);
+    color: var(--mimos-primary) !important;
+    border-color: var(--mimos-primary) !important;
 }
 
 /* ---- General Utilities ---- */
