@@ -16,6 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+    echo json_encode(['success' => false, 'error' => 'Invalid CSRF token']);
+    exit;
+}
+
 if (empty($_SESSION['attempt_id'])) {
     echo json_encode(['success' => false, 'error' => 'No active attempt']);
     exit;

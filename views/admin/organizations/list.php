@@ -88,6 +88,7 @@
                                           action="<?= url('admin/organizations.php?action=delete&id=' . $org['id']) ?>" 
                                           class="d-inline"
                                           onsubmit="return confirm('Are you sure you want to delete this organization?');">
+                                        <?= csrf_field() ?>
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                                             <i class="bi bi-trash"></i>
                                         </button>

@@ -14,6 +14,11 @@ $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
 
 // DELETE
 if ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
+    if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+        setFlash('error', 'Invalid security token.');
+        redirect(url('admin/question_banks.php'));
+    }
+    
     $result = QuestionBankController::destroy($id);
     setFlash($result['success'] ? 'success' : 'error', $result['success'] ? 'Question bank deleted successfully.' : $result['error']);
     redirect(url('admin/question_banks.php'));
@@ -26,6 +31,11 @@ if ($action === 'create') {
     $organizations = Organization::getActive();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+            setFlash('error', 'Invalid security token. Please try again.');
+            redirect(url('admin/question_banks.php?action=create'));
+        }
+
         $data = [
             'organization_id'  => $_POST['organization_id'] ?? '',
             'title'            => trim($_POST['title'] ?? ''),
@@ -65,6 +75,11 @@ if ($action === 'edit' && $id) {
     $organizations = Organization::getActive();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+            setFlash('error', 'Invalid security token. Please try again.');
+            redirect(url('admin/question_banks.php?action=edit&id=' . $id));
+        }
+
         $data = [
             'organization_id'  => $_POST['organization_id'] ?? '',
             'title'            => trim($_POST['title'] ?? ''),

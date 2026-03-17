@@ -46,6 +46,7 @@ $progressPercent = $totalQuestions > 0 ? round(($answeredCount / $totalQuestions
 
                 <!-- Answer Form -->
                 <form method="POST" action="<?= url('exam.php?q=' . $currentQ) ?>" id="answer-form">
+                    <?= csrf_field() ?>
                     <input type="hidden" name="save_answer" value="1">
                     <input type="hidden" name="question_id" value="<?= $currentAnswer['question_id'] ?>">
                     <input type="hidden" name="next_q" id="next_q" value="<?= min($currentQ + 1, $totalQuestions) ?>">
@@ -134,6 +135,7 @@ $progressPercent = $totalQuestions > 0 ? round(($answeredCount / $totalQuestions
                 <hr>
                 <form method="POST" action="<?= url('submit_exam.php') ?>"
                       onsubmit="return confirm('Are you sure you want to submit? You cannot change your answers after submission.\n\nAnswered: <?= $answeredCount ?>/<?= $totalQuestions ?>');">
+                    <?= csrf_field() ?>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-danger">
                             <i class="bi bi-send me-1"></i>Submit Exam
@@ -213,6 +215,7 @@ function selectOption(letter) {
     const formData = new FormData();
     formData.append('question_id', document.querySelector('input[name="question_id"]').value);
     formData.append('selected_option', letter);
+    formData.append('csrf_token', document.getElementById('csrf_token_field').value);
 
     fetch('<?= url('save_answer.php') ?>', {
         method: 'POST',

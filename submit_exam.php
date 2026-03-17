@@ -24,6 +24,11 @@ if (!$attempt || $attempt['status'] !== 'in_progress') {
 
 // Submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+        setFlash('error', 'Invalid security token. Please try again.');
+        redirect(url('exam.php'));
+    }
+    
     ExamAttempt::submit($attemptId, 'submitted');
     setFlash('success', 'Your exam has been submitted successfully!');
     redirect(url('result.php'));

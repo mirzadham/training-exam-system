@@ -21,6 +21,7 @@ $formTitle = $isEdit ? 'Edit Question Bank' : 'Add Question Bank';
 <div class="card">
     <div class="card-body">
         <form method="POST" action="<?= $formAction ?>" novalidate>
+            <?= csrf_field() ?>
             <div class="row">
                 <!-- Organization -->
                 <div class="col-md-6 mb-3">

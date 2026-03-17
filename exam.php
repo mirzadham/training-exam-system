@@ -70,6 +70,11 @@ if ($remainingSeconds <= 0) {
 // Handle answer save (POST) 
 // ============================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_answer'])) {
+    if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+        setFlash('error', 'Invalid security token. Please try again.');
+        redirect(url('exam.php?q=' . ((int)($_GET['q'] ?? 1))));
+    }
+    
     $questionId = (int) ($_POST['question_id'] ?? 0);
     $selectedOption = $_POST['selected_option'] ?? null;
 

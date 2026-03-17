@@ -111,9 +111,10 @@
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form method="POST"
-                                          action="<?= url('admin/question_banks.php?action=delete&id=' . $bank['id']) ?>"
+                                          action="<?= url("admin/question_banks.php?action=delete&id={$bank['id']}") ?>"
                                           class="d-inline"
-                                          onsubmit="return confirm('Delete this question bank and all its questions?');">
+                                          onsubmit="return confirm('Are you sure you want to delete this question bank and all its questions?');">
+                                        <?= csrf_field() ?>
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                                             <i class="bi bi-trash"></i>
                                         </button>

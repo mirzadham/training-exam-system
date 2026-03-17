@@ -89,9 +89,10 @@
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form method="POST"
-                                          action="<?= url('admin/questions.php?action=delete&id=' . $q['id']) ?>"
+                                          action="<?= url("admin/questions.php?action=delete&id={$q['id']}") ?>"
                                           class="d-inline"
-                                          onsubmit="return confirm('Delete this question?');">
+                                          onsubmit="return confirm('Are you sure you want to delete this question?');">
+                                        <?= csrf_field() ?>
                                         <input type="hidden" name="bank_id" value="<?= $q['question_bank_id'] ?>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                                             <i class="bi bi-trash"></i>

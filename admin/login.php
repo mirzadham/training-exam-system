@@ -17,17 +17,21 @@ if (isAdminLoggedIn()) {
 // Handle form submission
 $error = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
+    if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+        $error = 'Invalid security token. Please try again.';
+    } else {
+        $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
 
     $result = AuthController::login($username, $password);
 
     if ($result['success']) {
         setFlash('success', 'Welcome back, ' . e(getAdminName()) . '!');
-        redirect(url('admin/'));
+        redirect(url('admin/index.php'));
     } else {
         $error = $result['error'];
     }
+}
 }
 
 $pageTitle = 'Admin Login';
@@ -84,6 +88,7 @@ $pageTitle = 'Admin Login';
 
             <!-- Login Form -->
             <form method="POST" action="" novalidate>
+                <?= csrf_field() ?>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <div class="input-group">

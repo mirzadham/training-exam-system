@@ -14,27 +14,32 @@ $data = [];
 $organizations = Organization::getActive();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = [
-        'full_name'       => trim($_POST['full_name'] ?? ''),
-        'ic_number'       => trim($_POST['ic_number'] ?? ''),
-        'organization_id' => $_POST['organization_id'] ?? '',
-        'email'           => trim($_POST['email'] ?? ''),
-        'phone'           => trim($_POST['phone'] ?? ''),
-        'course_name'     => trim($_POST['course_name'] ?? ''),
-    ];
-
-    $result = RegistrationController::register($data);
-
-    if ($result['success']) {
-        // Store participant info in session for exam flow
-        $_SESSION['participant_id'] = $result['participant_id'];
-        $_SESSION['bank_id'] = $result['bank_id'];
-
-        setFlash('success', 'Registration successful! You may now start your exam.');
-        redirect(url('exam.php'));
+    if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+        $errors['general'] = 'Invalid security token. Please refresh and try again.';
+        setOldInput($_POST); // Keep old input even on CSRF failure
     } else {
-        $errors = $result['errors'];
-        setOldInput($data);
+        $data = [
+            'full_name'       => trim($_POST['full_name'] ?? ''),
+            'ic_number'       => trim($_POST['ic_number'] ?? ''),
+            'organization_id' => $_POST['organization_id'] ?? '',
+            'email'           => trim($_POST['email'] ?? ''),
+            'phone'           => trim($_POST['phone'] ?? ''),
+            'course_name'     => trim($_POST['course_name'] ?? ''),
+        ];
+
+        $result = RegistrationController::register($data);
+
+        if ($result['success']) {
+            // Store participant info in session for exam flow
+            $_SESSION['participant_id'] = $result['participant_id'];
+            $_SESSION['bank_id'] = $result['bank_id'];
+
+            setFlash('success', 'Registration successful! You may now start your exam.');
+            redirect(url('exam.php'));
+        } else {
+            $errors = $result['errors'];
+            setOldInput($data);
+        }
     }
 }
 
@@ -59,6 +64,7 @@ require_once VIEWS_PATH . '/layout/header.php';
                 <?php endif; ?>
 
                 <form method="POST" action="" novalidate>
+                    <?= csrf_field() ?>
                     <!-- Full Name -->
                     <div class="mb-3">
                         <label for="full_name" class="form-label">Full Name <span class="text-danger">*</span></label>

@@ -25,6 +25,7 @@ $formTitle = $isEdit ? 'Edit Organization' : 'Add Organization';
 <div class="card">
     <div class="card-body">
         <form method="POST" action="<?= $formAction ?>" novalidate>
+            <?= csrf_field() ?>
             <div class="row">
                 <!-- Organization Name -->
                 <div class="col-md-6 mb-3">

@@ -17,6 +17,11 @@ $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
 // DELETE action (POST only)
 // ============================================================
 if ($action === 'delete' && $_SERVER['REQUEST_METHOD'] === 'POST' && $id) {
+    if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+        setFlash('error', 'Invalid security token.');
+        redirect(url('admin/organizations.php'));
+    }
+    
     $result = OrganizationController::destroy($id);
     if ($result['success']) {
         setFlash('success', 'Organization deleted successfully.');
@@ -34,6 +39,11 @@ if ($action === 'create') {
     $data = [];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+            setFlash('error', 'Invalid security token. Please try again.');
+            redirect(url('admin/organizations.php?action=create'));
+        }
+
         $data = [
             'name'        => trim($_POST['name'] ?? ''),
             'code'        => trim($_POST['code'] ?? ''),
@@ -74,6 +84,11 @@ if ($action === 'edit' && $id) {
     $data = $org; // pre-fill form with existing data
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!verify_csrf($_POST['csrf_token'] ?? '')) {
+            setFlash('error', 'Invalid security token. Please try again.');
+            redirect(url('admin/organizations.php?action=edit&id=' . $id));
+        }
+
         $data = [
             'name'        => trim($_POST['name'] ?? ''),
             'code'        => trim($_POST['code'] ?? ''),
