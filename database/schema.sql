@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `exam_attempts` (
     `wrong_count` INT NOT NULL DEFAULT 0,
     `unanswered_count` INT NOT NULL DEFAULT 0,
     `score_percent` DECIMAL(5,2) NOT NULL DEFAULT 0.00,
-    `result` ENUM('fail','pass','excellent') NULL DEFAULT NULL,
+    `result` ENUM('fail','pass') NULL DEFAULT NULL,
     `status` ENUM('in_progress','submitted','time_up') NOT NULL DEFAULT 'in_progress',
     `started_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `submitted_at` TIMESTAMP NULL DEFAULT NULL,

@@ -37,11 +37,8 @@ require_once VIEWS_PATH . '/layout/header.php';
 // Prepare badge classes based on result
 $badgeClass = 'bg-secondary';
 $iconClass = 'bi-info-circle';
-if ($attempt['result'] === 'excellent') {
+if ($attempt['result'] === 'pass') {
     $badgeClass = 'bg-success';
-    $iconClass = 'bi-award-fill';
-} elseif ($attempt['result'] === 'pass') {
-    $badgeClass = 'bg-primary';
     $iconClass = 'bi-check-circle-fill';
 } elseif ($attempt['result'] === 'fail') {
     $badgeClass = 'bg-danger';

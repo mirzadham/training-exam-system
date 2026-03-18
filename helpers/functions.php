@@ -71,9 +71,7 @@ function getFlash(string $namespace = ''): ?array
  */
 function classifyResult(float $scorePercent): string
 {
-    if ($scorePercent > SCORE_EXCELLENT_PERCENT) {
-        return RESULT_EXCELLENT;
-    } elseif ($scorePercent >= SCORE_PASS_PERCENT) {
+    if ($scorePercent >= SCORE_PASS_PERCENT) {
         return RESULT_PASS;
     }
     return RESULT_FAIL;
