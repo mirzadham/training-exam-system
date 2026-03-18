@@ -130,4 +130,61 @@ class Question
         $stmt->execute(['bank_id' => $bankId]);
         return (int) $stmt->fetchColumn();
     }
+
+    /**
+     * Count questions matching filters (for pagination)
+     */
+    public static function countFiltered(string $search = '', string $bankFilter = ''): int
+    {
+        $pdo = getDBConnection();
+        $sql = "SELECT COUNT(*)
+                FROM questions q
+                JOIN question_banks qb ON q.question_bank_id = qb.id
+                JOIN organizations o ON qb.organization_id = o.id
+                WHERE 1=1";
+        $params = [];
+
+        if ($search !== '') {
+            $sql .= " AND q.question_text LIKE :search";
+            $params['search'] = "%$search%";
+        }
+
+        if ($bankFilter !== '' && is_numeric($bankFilter)) {
+            $sql .= " AND q.question_bank_id = :bank_id";
+            $params['bank_id'] = (int) $bankFilter;
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Get paginated questions
+     */
+    public static function getPaginated(string $search = '', string $bankFilter = '', int $limit = 10, int $offset = 0): array
+    {
+        $pdo = getDBConnection();
+        $sql = "SELECT q.*, qb.title AS bank_title, o.name AS organization_name
+                FROM questions q
+                JOIN question_banks qb ON q.question_bank_id = qb.id
+                JOIN organizations o ON qb.organization_id = o.id
+                WHERE 1=1";
+        $params = [];
+
+        if ($search !== '') {
+            $sql .= " AND q.question_text LIKE :search";
+            $params['search'] = "%$search%";
+        }
+
+        if ($bankFilter !== '' && is_numeric($bankFilter)) {
+            $sql .= " AND q.question_bank_id = :bank_id";
+            $params['bank_id'] = (int) $bankFilter;
+        }
+
+        $sql .= " ORDER BY o.name ASC, qb.title ASC, q.id ASC LIMIT $limit OFFSET $offset";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
 }

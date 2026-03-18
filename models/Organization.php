@@ -134,4 +134,55 @@ class Organization
         $stmt = $pdo->query("SELECT COUNT(*) FROM organizations");
         return (int) $stmt->fetchColumn();
     }
+
+    /**
+     * Count organizations matching filters (for pagination)
+     */
+    public static function countFiltered(string $search = '', string $status = ''): int
+    {
+        $pdo = getDBConnection();
+        $sql = "SELECT COUNT(*) FROM organizations WHERE 1=1";
+        $params = [];
+
+        if ($search !== '') {
+            $sql .= " AND (name LIKE :search OR code LIKE :search2)";
+            $params['search'] = "%$search%";
+            $params['search2'] = "%$search%";
+        }
+
+        if ($status !== '' && in_array($status, ['active', 'inactive'])) {
+            $sql .= " AND status = :status";
+            $params['status'] = $status;
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Get paginated organizations
+     */
+    public static function getPaginated(string $search = '', string $status = '', int $limit = 10, int $offset = 0): array
+    {
+        $pdo = getDBConnection();
+        $sql = "SELECT * FROM organizations WHERE 1=1";
+        $params = [];
+
+        if ($search !== '') {
+            $sql .= " AND (name LIKE :search OR code LIKE :search2)";
+            $params['search'] = "%$search%";
+            $params['search2'] = "%$search%";
+        }
+
+        if ($status !== '' && in_array($status, ['active', 'inactive'])) {
+            $sql .= " AND status = :status";
+            $params['status'] = $status;
+        }
+
+        $sql .= " ORDER BY name ASC LIMIT $limit OFFSET $offset";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
 }
