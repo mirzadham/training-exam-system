@@ -292,8 +292,15 @@ main {
 .stat-card-blue {
     background-color: #d6e4f9 !important;
 }
-.stat-card-blue .stat-info h6 { color: #3a6db5; }
-.stat-card-blue .stat-label { color: #4a9e6e; }
+
+.stat-card-blue .stat-info h6 {
+    color: #3a6db5;
+}
+
+.stat-card-blue .stat-label {
+    color: #4a9e6e;
+}
+
 .stat-card-blue .stat-icon-box {
     background-color: #c5d9f7;
     color: #3a6db5;
@@ -302,7 +309,11 @@ main {
 .stat-card-green {
     background-color: #d0f0db !important;
 }
-.stat-card-green .stat-info h6 { color: #2e7d4f; }
+
+.stat-card-green .stat-info h6 {
+    color: #2e7d4f;
+}
+
 .stat-card-green .stat-icon-box {
     background-color: #c3e6cf;
     color: #2e7d4f;
@@ -311,7 +322,11 @@ main {
 .stat-card-red {
     background-color: #fad5d1 !important;
 }
-.stat-card-red .stat-info h6 { color: #c0392b; }
+
+.stat-card-red .stat-info h6 {
+    color: #c0392b;
+}
+
 .stat-card-red .stat-icon-box {
     background-color: #f5c6c2;
     color: #c0392b;
@@ -320,7 +335,11 @@ main {
 .stat-card-yellow {
     background-color: #fdf0c4 !important;
 }
-.stat-card-yellow .stat-info h6 { color: #9a7b1a; }
+
+.stat-card-yellow .stat-info h6 {
+    color: #9a7b1a;
+}
+
 .stat-card-yellow .stat-icon-box {
     background-color: #f5e6a3;
     color: #9a7b1a;
@@ -358,6 +377,7 @@ main {
     color: var(--mimos-text-muted);
     border-bottom: 2px solid var(--mimos-border);
     background-color: #fcfcfd;
+    border-radius: 0.5rem;
 }
 
 .table td {
@@ -378,8 +398,15 @@ main {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
 }
 
 /* ---- Exam Progress Nav ---- */
@@ -402,6 +429,8 @@ main {
 .pagination-bar {
     background-color: #fcfcfd;
     border-top: 1px solid var(--mimos-border);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
 }
 
 .pagination-per-page {
