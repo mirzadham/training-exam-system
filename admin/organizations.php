@@ -120,7 +120,12 @@ if ($action === 'edit' && $id) {
 // ============================================================
 $search = trim($_GET['search'] ?? '');
 $statusFilter = trim($_GET['status'] ?? '');
-$organizations = Organization::getAll($search, $statusFilter);
+$currentPage = max(1, (int) ($_GET['page'] ?? 1));
+$perPage = (int) ($_GET['per_page'] ?? 10);
+
+$totalItems = Organization::countFiltered($search, $statusFilter);
+$pagination = paginate($totalItems, $currentPage, $perPage);
+$organizations = Organization::getPaginated($search, $statusFilter, $pagination['perPage'], $pagination['offset']);
 
 $pageTitle = 'Organizations';
 require_once VIEWS_PATH . '/layout/admin_header.php';

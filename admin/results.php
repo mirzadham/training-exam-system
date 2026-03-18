@@ -13,9 +13,20 @@ requireAdmin();
 $search = trim($_GET['search'] ?? '');
 $orgFilter = trim($_GET['org'] ?? '');
 $statusFilter = trim($_GET['status'] ?? '');
+$currentPage = max(1, (int) ($_GET['page'] ?? 1));
+$perPage = (int) ($_GET['per_page'] ?? 10);
 
-$attempts = ExamAttempt::getAll($search, $orgFilter, $statusFilter);
 $organizations = Organization::getActive();
+
+// CSV export uses ALL matching rows (no pagination)
+$isExport = isset($_GET['export']) && $_GET['export'] === 'csv';
+if ($isExport) {
+    $attempts = ExamAttempt::getAll($search, $orgFilter, $statusFilter);
+} else {
+    $totalItems = ExamAttempt::countFiltered($search, $orgFilter, $statusFilter);
+    $pagination = paginate($totalItems, $currentPage, $perPage);
+    $attempts = ExamAttempt::getPaginated($search, $orgFilter, $statusFilter, $pagination['perPage'], $pagination['offset']);
+}
 
 // Handle CSV Export
 if (isset($_GET['export']) && $_GET['export'] === 'csv') {

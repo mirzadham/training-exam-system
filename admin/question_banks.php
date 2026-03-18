@@ -109,7 +109,12 @@ if ($action === 'edit' && $id) {
 // LIST (default)
 $search = trim($_GET['search'] ?? '');
 $orgFilter = trim($_GET['org'] ?? '');
-$questionBanks = QuestionBank::getAll($search, $orgFilter);
+$currentPage = max(1, (int) ($_GET['page'] ?? 1));
+$perPage = (int) ($_GET['per_page'] ?? 10);
+
+$totalItems = QuestionBank::countFiltered($search, $orgFilter);
+$pagination = paginate($totalItems, $currentPage, $perPage);
+$questionBanks = QuestionBank::getPaginated($search, $orgFilter, $pagination['perPage'], $pagination['offset']);
 $organizations = Organization::getActive();
 
 $pageTitle = 'Question Banks';

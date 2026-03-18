@@ -175,4 +175,62 @@ class QuestionBank
         $stmt = $pdo->query("SELECT COUNT(*) FROM question_banks");
         return (int) $stmt->fetchColumn();
     }
+
+    /**
+     * Count question banks matching filters (for pagination)
+     */
+    public static function countFiltered(string $search = '', string $orgFilter = ''): int
+    {
+        $pdo = getDBConnection();
+        $sql = "SELECT COUNT(*)
+                FROM question_banks qb
+                JOIN organizations o ON qb.organization_id = o.id
+                WHERE 1=1";
+        $params = [];
+
+        if ($search !== '') {
+            $sql .= " AND (qb.title LIKE :search OR o.name LIKE :search2)";
+            $params['search'] = "%$search%";
+            $params['search2'] = "%$search%";
+        }
+
+        if ($orgFilter !== '' && is_numeric($orgFilter)) {
+            $sql .= " AND qb.organization_id = :org_id";
+            $params['org_id'] = (int) $orgFilter;
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Get paginated question banks
+     */
+    public static function getPaginated(string $search = '', string $orgFilter = '', int $limit = 10, int $offset = 0): array
+    {
+        $pdo = getDBConnection();
+        $sql = "SELECT qb.*, o.name AS organization_name, o.code AS organization_code,
+                       (SELECT COUNT(*) FROM questions q WHERE q.question_bank_id = qb.id) AS question_count
+                FROM question_banks qb
+                JOIN organizations o ON qb.organization_id = o.id
+                WHERE 1=1";
+        $params = [];
+
+        if ($search !== '') {
+            $sql .= " AND (qb.title LIKE :search OR o.name LIKE :search2)";
+            $params['search'] = "%$search%";
+            $params['search2'] = "%$search%";
+        }
+
+        if ($orgFilter !== '' && is_numeric($orgFilter)) {
+            $sql .= " AND qb.organization_id = :org_id";
+            $params['org_id'] = (int) $orgFilter;
+        }
+
+        $sql .= " ORDER BY o.name ASC, qb.title ASC LIMIT $limit OFFSET $offset";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
 }
