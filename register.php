@@ -71,11 +71,12 @@ require_once VIEWS_PATH . '/layout/header.php';
                                    class="form-control <?= isset($errors['full_name']) ? 'is-invalid' : '' ?>"
                                    id="full_name" name="full_name"
                                    value="<?= e($data['full_name'] ?? '') ?>"
-                                   placeholder="Enter your full name" required>
+                                   required>
                             <?php if (isset($errors['full_name'])): ?>
                                 <div class="invalid-feedback"><?= e($errors['full_name']) ?></div>
                             <?php endif; ?>
                         </div>
+                        <div class="form-text">Enter your full name as per IC (e.g. ALI BIN ABU)</div>
                     </div>
 
                     <!-- IC Number -->
@@ -87,7 +88,6 @@ require_once VIEWS_PATH . '/layout/header.php';
                                    class="form-control <?= isset($errors['ic_number']) ? 'is-invalid' : '' ?>"
                                    id="ic_number" name="ic_number"
                                    value="<?= e($data['ic_number'] ?? '') ?>"
-                                   placeholder="e.g. 901225145678 (12 digits, no dashes)"
                                    maxlength="14" required>
                             <?php if (isset($errors['ic_number'])): ?>
                                 <div class="invalid-feedback"><?= e($errors['ic_number']) ?></div>
