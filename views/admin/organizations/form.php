@@ -9,7 +9,7 @@ $formTitle = $isEdit ? 'Edit Organization' : 'Add Organization';
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="bi bi-building me-2"></i><?= $formTitle ?></h2>
+    <h1 class="m-0" style="font-weight: 700; font-size: 1.75rem;"><?= $formTitle ?></h1>
     <a href="<?= url('admin/organizations.php') ?>" class="btn btn-outline-secondary">
         <i class="bi bi-arrow-left me-1"></i>Back to List
     </a>
