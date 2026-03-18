@@ -1,7 +1,7 @@
 <!-- Organization List View -->
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="bi bi-building me-2"></i>Organizations</h2>
+    <h1 class="m-0" style="font-weight: 700; font-size: 1.75rem;">Organizations</h1>
     <a href="<?= url('admin/organizations.php?action=create') ?>" class="btn btn-primary">
         <i class="bi bi-plus-lg me-1"></i>Add Organization
     </a>
@@ -63,7 +63,7 @@
                     <tbody>
                         <?php foreach ($organizations as $i => $org): ?>
                             <tr>
-                                <td><?= $i + 1 ?></td>
+                                <td><?= $pagination['offset'] + $i + 1 ?></td>
                                 <td>
                                     <strong><?= e($org['name']) ?></strong>
                                     <?php if ($org['description']): ?>
@@ -81,7 +81,7 @@
                                 <td><small><?= date('d M Y', strtotime($org['created_at'])) ?></small></td>
                                 <td class="text-end">
                                     <a href="<?= url('admin/organizations.php?action=edit&id=' . $org['id']) ?>" 
-                                       class="btn btn-sm btn-outline-primary" title="Edit">
+                                        class="btn btn-sm btn-outline-primary" title="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <form method="POST" 
@@ -99,8 +99,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer text-muted">
-                <small>Showing <?= count($organizations) ?> organization(s)</small>
+            <div class="card-footer p-0">
+                <?php require VIEWS_PATH . '/layout/pagination.php'; ?>
             </div>
         <?php endif; ?>
     </div>
