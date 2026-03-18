@@ -1,7 +1,7 @@
 <!-- Admin Results List View -->
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="bi bi-bar-chart-steps me-2"></i>Exam Results</h2>
+    <h1 class="m-0" style="font-weight: 700; font-size: 1.75rem;">Exam Results</h1>
     <div>
         <a href="<?= url('admin/results.php?' . http_build_query(array_merge($_GET, ['export' => 'csv']))) ?>" class="btn btn-success">
             <i class="bi bi-file-earmark-spreadsheet me-1"></i>Export to CSV
@@ -101,8 +101,7 @@
                                         echo '<span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>In Progress</span>';
                                     } else {
                                         $badge = 'bg-secondary';
-                                        if ($a['result'] === 'excellent') $badge = 'bg-success';
-                                        elseif ($a['result'] === 'pass') $badge = 'bg-primary';
+                                        if ($a['result'] === 'pass') $badge = 'bg-success';
                                         elseif ($a['result'] === 'fail') $badge = 'bg-danger';
                                         
                                         echo '<span class="badge ' . $badge . ' text-uppercase fs-6">' . e($a['result']) . '</span>';
@@ -125,8 +124,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer bg-white text-muted">
-                <small>Showing <?= count($attempts) ?> exam attempt(s)</small>
+            <div class="card-footer p-0">
+                <?php require VIEWS_PATH . '/layout/pagination.php'; ?>
             </div>
         <?php endif; ?>
     </div>
