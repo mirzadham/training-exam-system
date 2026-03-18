@@ -27,3 +27,6 @@ vendor/
 
 # Prompt files (development reference only)
 prompt/
+
+# Temporary files
+diff.txt
