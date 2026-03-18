@@ -1,8 +1,7 @@
 /*
  * Training Exam System — MIMOS Academy Theme
  * 
- * Applies MIMOS Academy corporate branding to structural elements (headers/footers)
- * while preserving standard Bootstrap UI UX for interactive components.
+ * Corporate branding + admin sidebar layout.
  */
 
 :root {
@@ -12,13 +11,17 @@
     --mimos-primary-dark: #5E1F53;
 
     --mimos-dark: #0B0B0F;
-    --mimos-bg: #F8F6F9;
+    --mimos-bg: #F4F2F6;
     --mimos-border: #D9D4DC;
     --mimos-text-muted: #6E6470;
 
-    /* Subtle background tweaks only */
+    /* Sidebar */
+    --sidebar-width: 240px;
+    --sidebar-bg: #ffffff;
+
+    /* Subtle background */
     --bs-body-bg: var(--mimos-bg);
-    --bs-body-font-family: "din-round", sans-serif;
+    --bs-body-font-family: 'Inter', sans-serif;
 }
 
 /* ---- Global Typography & Layout ---- */
@@ -28,18 +31,179 @@ body {
     min-height: 100vh;
     background-color: var(--bs-body-bg);
     font-family: var(--bs-body-font-family);
+    margin: 0;
 }
 
 main {
     flex: 1;
 }
 
-text-muted {
+.text-muted {
     color: var(--mimos-text-muted) !important;
 }
 
-/* ---- Brand Header / Navbar ---- */
-/* Apply the brand color only to the main headers, leaving buttons standard */
+/* ================================================================
+   ADMIN SIDEBAR LAYOUT
+   ================================================================ */
+
+/* ---- Sidebar ---- */
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid #e8e4eb;
+    display: flex;
+    flex-direction: column;
+    z-index: 1040;
+    overflow-y: auto;
+}
+
+/* Brand / Logo */
+.sidebar-brand {
+    padding: 24px 20px 16px;
+}
+
+.sidebar-brand-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.sidebar-logo {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Navigation */
+.sidebar-nav {
+    flex: 1;
+    padding: 8px 12px;
+}
+
+.sidebar-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #3a3540;
+    font-size: 0.925rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-nav-link i {
+    font-size: 1.15rem;
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.sidebar-nav-link:hover {
+    background-color: #f5f0f7;
+    color: var(--mimos-primary);
+}
+
+.sidebar-nav-link.active {
+    background-color: #f0dced;
+    color: var(--mimos-primary);
+    font-weight: 600;
+}
+
+/* Admin Section (bottom) */
+.sidebar-admin-section {
+    padding: 16px 16px 20px;
+    border-top: 1px solid #e8e4eb;
+    margin-top: auto;
+}
+
+.sidebar-admin-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.sidebar-admin-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sidebar-admin-avatar i {
+    font-size: 1.25rem;
+    color: #888;
+}
+
+.sidebar-admin-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--mimos-dark);
+    line-height: 1.2;
+}
+
+.sidebar-logout-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid #d0c8d4;
+    background: #ffffff;
+    color: #3a3540;
+    font-size: 0.825rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.sidebar-logout-btn:hover {
+    background-color: #f5f0f7;
+    border-color: var(--mimos-primary);
+    color: var(--mimos-primary);
+}
+
+/* ---- Content Area ---- */
+.admin-content {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--mimos-bg);
+}
+
+.admin-main {
+    flex: 1;
+}
+
+.admin-footer {
+    margin-top: auto;
+    background-color: transparent;
+}
+
+/* ================================================================
+   PUBLIC (non-admin) NAVBAR — kept for public pages
+   ================================================================ */
 .navbar.bg-dark {
     background: #ffffff !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -61,9 +225,105 @@ text-muted {
     letter-spacing: 0.5px;
 }
 
-/* Navbar Toggle for Light Header */
 .navbar-toggler:focus {
     box-shadow: none;
+}
+
+/* ================================================================
+   DASHBOARD STAT CARDS (Redesign)
+   ================================================================ */
+
+.stat-card {
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    background-color: transparent !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.stat-card .card-body {
+    padding: 24px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-card .stat-info h6 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: none;
+    margin-bottom: 6px;
+    color: #1a1a1a !important;
+}
+
+.stat-card .stat-info .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--mimos-dark);
+}
+
+.stat-card .stat-info .stat-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.stat-card .stat-icon-box {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-card .stat-icon-box i {
+    font-size: 1.4rem;
+}
+
+/* Card color variants */
+.stat-card-blue {
+    background-color: #d6e4f9 !important;
+}
+.stat-card-blue .stat-info h6 { color: #3a6db5; }
+.stat-card-blue .stat-label { color: #4a9e6e; }
+.stat-card-blue .stat-icon-box {
+    background-color: #c5d9f7;
+    color: #3a6db5;
+}
+
+.stat-card-green {
+    background-color: #d0f0db !important;
+}
+.stat-card-green .stat-info h6 { color: #2e7d4f; }
+.stat-card-green .stat-icon-box {
+    background-color: #c3e6cf;
+    color: #2e7d4f;
+}
+
+.stat-card-red {
+    background-color: #fad5d1 !important;
+}
+.stat-card-red .stat-info h6 { color: #c0392b; }
+.stat-card-red .stat-icon-box {
+    background-color: #f5c6c2;
+    color: #c0392b;
+}
+
+.stat-card-yellow {
+    background-color: #fdf0c4 !important;
+}
+.stat-card-yellow .stat-info h6 { color: #9a7b1a; }
+.stat-card-yellow .stat-icon-box {
+    background-color: #f5e6a3;
+    color: #9a7b1a;
 }
 
 /* ---- Forms & Inputs ---- */
@@ -72,7 +332,7 @@ text-muted {
     color: var(--mimos-dark);
 }
 
-/* ---- Cards ---- */
+/* ---- Cards (general) ---- */
 .card {
     border: 1px solid var(--mimos-border);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
@@ -83,16 +343,6 @@ text-muted {
 .card-header {
     background-color: #ffffff;
     border-bottom: 1px solid var(--mimos-border);
-}
-
-/* ---- Admin Dashboard Stats ---- */
-.stat-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* ---- Tables ---- */
@@ -128,15 +378,8 @@ text-muted {
 }
 
 @keyframes pulse {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.5;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 /* ---- Exam Progress Nav ---- */
@@ -153,4 +396,49 @@ text-muted {
 /* ---- General Utilities ---- */
 .cursor-pointer {
     cursor: pointer;
+}
+
+/* ---- Pagination ---- */
+.pagination-bar {
+    background-color: #fcfcfd;
+    border-top: 1px solid var(--mimos-border);
+}
+
+.pagination-per-page {
+    border-color: var(--mimos-border);
+    color: var(--mimos-text-muted);
+    font-size: 0.85rem;
+    padding: 0.25rem 2rem 0.25rem 0.5rem;
+}
+
+.pagination-per-page:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+}
+
+.page-link {
+    color: #0d6efd;
+    border-color: var(--mimos-border);
+    padding: 0.4rem 0.75rem;
+}
+
+.page-link:hover {
+    color: #0a58ca;
+    background-color: #f8f9fa;
+    border-color: var(--mimos-border);
+}
+
+.page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: #fff;
+}
+
+.page-item.disabled .page-link {
+    color: #adb5bd;
+    border-color: var(--mimos-border);
+}
+
+.pagination-info {
+    font-size: 0.875rem;
 }

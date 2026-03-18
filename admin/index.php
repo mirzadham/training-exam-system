@@ -33,67 +33,61 @@ $pageTitle = 'Dashboard';
 require_once VIEWS_PATH . '/layout/admin_header.php';
 ?>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="bi bi-speedometer2 me-2"></i>Dashboard</h2>
-</div>
+<h1 class="mb-4" style="font-weight: 700; font-size: 1.75rem;">Dashboard</h1>
 
 <div class="row g-4">
-    <div class="col-md-3">
-        <div class="card shadow-sm">
+    <!-- Organizations -->
+    <div class="col-md-6">
+        <div class="card stat-card stat-card-blue">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-uppercase text-muted mb-2">Organizations</h6>
-                        <h2 class="mb-0"><?= $totalOrgs ?> <small class="text-success fs-6">Active</small></h2>
-                    </div>
-                    <div class="text-primary bg-primary bg-opacity-10 p-3 rounded">
-                        <i class="bi bi-building fs-3"></i>
-                    </div>
+                <div class="stat-info">
+                    <h6>Organizations</h6>
+                    <div class="stat-number"><?= $totalOrgs ?> <span class="stat-label">Active</span></div>
+                </div>
+                <div class="stat-icon-box">
+                    <i class="bi bi-building"></i>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card shadow-sm">
+    <!-- Total Participants -->
+    <div class="col-md-6">
+        <div class="card stat-card stat-card-green">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-uppercase text-muted mb-2">Total Participants</h6>
-                        <h2 class="mb-0"><?= $totalParticipants ?></h2>
-                    </div>
-                    <div class="text-success bg-success bg-opacity-10 p-3 rounded">
-                        <i class="bi bi-people fs-3"></i>
-                    </div>
+                <div class="stat-info">
+                    <h6>Total Participants</h6>
+                    <div class="stat-number"><?= $totalParticipants ?></div>
+                </div>
+                <div class="stat-icon-box">
+                    <i class="bi bi-people"></i>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card shadow-sm">
+    <!-- Exam Attempts -->
+    <div class="col-md-6">
+        <div class="card stat-card stat-card-red">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-uppercase text-muted mb-2">Exam Attempts</h6>
-                        <h2 class="mb-0"><?= $totalExams ?></h2>
-                    </div>
-                    <div class="text-danger bg-danger bg-opacity-10 p-3 rounded">
-                        <i class="bi bi-bar-chart fs-3"></i>
-                    </div>
+                <div class="stat-info">
+                    <h6>Exam Attempts</h6>
+                    <div class="stat-number"><?= $totalExams ?></div>
+                </div>
+                <div class="stat-icon-box">
+                    <i class="bi bi-bar-chart"></i>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card shadow-sm">
+    <!-- Average Score -->
+    <div class="col-md-6">
+        <div class="card stat-card stat-card-yellow">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h6 class="text-uppercase text-muted mb-2">Average Score</h6>
-                        <h2 class="mb-0"><?= $avgScore ?>%</h2>
-                    </div>
-                    <div class="text-warning bg-warning bg-opacity-10 p-3 rounded">
-                        <i class="bi bi-percent fs-3"></i>
-                    </div>
+                <div class="stat-info">
+                    <h6>Average Score</h6>
+                    <div class="stat-number"><?= $avgScore ?>%</div>
+                </div>
+                <div class="stat-icon-box">
+                    <i class="bi bi-percent"></i>
                 </div>
             </div>
         </div>

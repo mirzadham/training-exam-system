@@ -14,80 +14,87 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" 
           rel="stylesheet">
 
+    <!-- Google Fonts — Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="<?= asset('css/style.css') ?>?v=<?= filemtime(__DIR__ . '/../../assets/css/style.css') ?>" rel="stylesheet">
 </head>
 <body>
 
-<!-- Admin Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="<?= url('admin/') ?>">
-            <img src="<?= asset('img/logo.png') ?>" alt="MIMOS Academy Logo" style="width: 180px; height: 60px; object-fit: cover; object-position: center;" class="me-2 rounded">
-            <small class="text-muted">Admin</small>
+<!-- Admin Sidebar -->
+<aside class="admin-sidebar" id="adminSidebar">
+    <!-- Brand / Logo -->
+    <div class="sidebar-brand">
+        <a href="<?= url('admin/') ?>" class="sidebar-brand-link">
+            <img src="<?= asset('img/logo.png') ?>" alt="MIMOS Academy Logo" class="sidebar-logo">
         </a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
-            <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="adminNavbar">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= url('admin/') ?>">
-                        <i class="bi bi-speedometer2 me-1"></i>Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= url('admin/organizations.php') ?>">
-                        <i class="bi bi-building me-1"></i>Organizations
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= url('admin/question_banks.php') ?>">
-                        <i class="bi bi-collection me-1"></i>Question Banks
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= url('admin/questions.php') ?>">
-                        <i class="bi bi-question-circle me-1"></i>Questions
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= url('admin/participants.php') ?>">
-                        <i class="bi bi-people me-1"></i>Participants
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= url('admin/results.php') ?>">
-                        <i class="bi bi-bar-chart me-1"></i>Results
-                    </a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <span class="nav-link text-dark">
-                        <i class="bi bi-person-circle me-1"></i><?= e(getAdminName()) ?>
-                    </span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= url('admin/logout.php') ?>">
-                        <i class="bi bi-box-arrow-right me-1"></i>Logout
-                    </a>
-                </li>
-            </ul>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+        <ul class="sidebar-nav-list">
+            <li>
+                <a href="<?= url('admin/') ?>" class="sidebar-nav-link<?= ($pageTitle ?? '') === 'Dashboard' ? ' active' : '' ?>">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="<?= url('admin/organizations.php') ?>" class="sidebar-nav-link<?= ($pageTitle ?? '') === 'Organizations' || ($pageTitle ?? '') === 'Add Organization' || ($pageTitle ?? '') === 'Edit Organization' ? ' active' : '' ?>">
+                    <i class="bi bi-building"></i>
+                    <span>Organizations</span>
+                </a>
+            </li>
+            <li>
+                <a href="<?= url('admin/question_banks.php') ?>" class="sidebar-nav-link<?= ($pageTitle ?? '') === 'Question Banks' || ($pageTitle ?? '') === 'Add Question Bank' || ($pageTitle ?? '') === 'Edit Question Bank' ? ' active' : '' ?>">
+                    <i class="bi bi-collection"></i>
+                    <span>Question Banks</span>
+                </a>
+            </li>
+            <li>
+                <a href="<?= url('admin/questions.php') ?>" class="sidebar-nav-link<?= ($pageTitle ?? '') === 'Questions' || ($pageTitle ?? '') === 'Add Question' || ($pageTitle ?? '') === 'Edit Question' ? ' active' : '' ?>">
+                    <i class="bi bi-question-circle"></i>
+                    <span>Questions</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="<?= url('admin/results.php') ?>" class="sidebar-nav-link<?= ($pageTitle ?? '') === 'Exam Results' ? ' active' : '' ?>">
+                    <i class="bi bi-bar-chart-line"></i>
+                    <span>Results</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Admin Section (bottom) -->
+    <div class="sidebar-admin-section">
+        <div class="sidebar-admin-info">
+            <div class="sidebar-admin-avatar">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <span class="sidebar-admin-name"><?= e(getAdminName()) ?></span>
+        </div>
+        <a href="<?= url('admin/logout.php') ?>" class="sidebar-logout-btn">
+            <i class="bi bi-box-arrow-right me-1"></i>Logout
+        </a>
+    </div>
+</aside>
+
+<!-- Admin Content Area -->
+<div class="admin-content">
+
+    <!-- Flash Messages -->
+    <?php $flash = getFlash(); ?>
+    <?php if ($flash): ?>
+    <div class="px-4 pt-3">
+        <div class="alert alert-<?= $flash['type'] === 'error' ? 'danger' : e($flash['type']) ?> alert-dismissible fade show" role="alert">
+            <?= e($flash['message']) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     </div>
-</nav>
+    <?php endif; ?>
 
-<!-- Flash Messages -->
-<?php $flash = getFlash(); ?>
-<?php if ($flash): ?>
-<div class="container-fluid mt-3">
-    <div class="alert alert-<?= $flash['type'] === 'error' ? 'danger' : e($flash['type']) ?> alert-dismissible fade show" role="alert">
-        <?= e($flash['message']) ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-</div>
-<?php endif; ?>
-
-<!-- Admin Main Content -->
-<main class="container-fluid py-4">
+    <!-- Admin Main Content -->
+    <main class="admin-main px-4 py-4">
