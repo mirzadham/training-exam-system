@@ -48,6 +48,7 @@ $pageTitle = 'Admin Login';
           rel="stylesheet" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" 
           rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="<?= asset('css/style.css') ?>" rel="stylesheet">
 
     <style>

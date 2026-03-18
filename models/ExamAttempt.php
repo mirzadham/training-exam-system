@@ -286,4 +286,76 @@ class ExamAttempt
         $stmt = $pdo->query("SELECT COUNT(*) FROM exam_attempts");
         return (int) $stmt->fetchColumn();
     }
+
+    /**
+     * Count attempts matching filters (for pagination)
+     */
+    public static function countFiltered(string $search = '', string $orgFilter = '', string $statusFilter = ''): int
+    {
+        $pdo = getDBConnection();
+        $sql = "SELECT COUNT(*)
+                FROM exam_attempts ea
+                JOIN participants p ON ea.participant_id = p.id
+                JOIN question_banks qb ON ea.question_bank_id = qb.id
+                JOIN organizations o ON qb.organization_id = o.id
+                WHERE 1=1";
+        $params = [];
+
+        if ($search !== '') {
+            $sql .= " AND (p.full_name LIKE :search OR p.ic_number LIKE :search2)";
+            $params['search'] = "%$search%";
+            $params['search2'] = "%$search%";
+        }
+
+        if ($orgFilter !== '' && is_numeric($orgFilter)) {
+            $sql .= " AND qb.organization_id = :org_id";
+            $params['org_id'] = (int) $orgFilter;
+        }
+
+        if ($statusFilter !== '' && in_array($statusFilter, ['in_progress', 'submitted', 'time_up'])) {
+            $sql .= " AND ea.status = :status";
+            $params['status'] = $statusFilter;
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
+    }
+
+    /**
+     * Get paginated attempts (for admin reporting)
+     */
+    public static function getPaginated(string $search = '', string $orgFilter = '', string $statusFilter = '', int $limit = 10, int $offset = 0): array
+    {
+        $pdo = getDBConnection();
+        $sql = "SELECT ea.*, p.full_name AS participant_name, p.ic_number,
+                       qb.title AS bank_title, o.name AS organization_name, o.code AS organization_code
+                FROM exam_attempts ea
+                JOIN participants p ON ea.participant_id = p.id
+                JOIN question_banks qb ON ea.question_bank_id = qb.id
+                JOIN organizations o ON qb.organization_id = o.id
+                WHERE 1=1";
+        $params = [];
+
+        if ($search !== '') {
+            $sql .= " AND (p.full_name LIKE :search OR p.ic_number LIKE :search2)";
+            $params['search'] = "%$search%";
+            $params['search2'] = "%$search%";
+        }
+
+        if ($orgFilter !== '' && is_numeric($orgFilter)) {
+            $sql .= " AND qb.organization_id = :org_id";
+            $params['org_id'] = (int) $orgFilter;
+        }
+
+        if ($statusFilter !== '' && in_array($statusFilter, ['in_progress', 'submitted', 'time_up'])) {
+            $sql .= " AND ea.status = :status";
+            $params['status'] = $statusFilter;
+        }
+
+        $sql .= " ORDER BY ea.started_at DESC LIMIT $limit OFFSET $offset";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
 }

@@ -25,7 +25,6 @@ define('MODELS_PATH', ROOT_PATH . '/models');
 
 // Scoring rules
 define('SCORE_PASS_PERCENT', 50);
-define('SCORE_EXCELLENT_PERCENT', 80);
 
 // Timer rule
 define('DEFAULT_MINUTES_PER_QUESTION', 1);
@@ -33,7 +32,6 @@ define('DEFAULT_MINUTES_PER_QUESTION', 1);
 // Result classifications
 define('RESULT_FAIL', 'fail');
 define('RESULT_PASS', 'pass');
-define('RESULT_EXCELLENT', 'excellent');
 
 // Exam attempt statuses
 define('STATUS_IN_PROGRESS', 'in_progress');

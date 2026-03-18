@@ -117,7 +117,12 @@ if ($action === 'edit' && $id) {
 // LIST (default)
 $search = trim($_GET['search'] ?? '');
 $bankFilter = trim($_GET['bank'] ?? '');
-$questions = Question::getAll($search, $bankFilter);
+$currentPage = max(1, (int) ($_GET['page'] ?? 1));
+$perPage = (int) ($_GET['per_page'] ?? 10);
+
+$totalItems = Question::countFiltered($search, $bankFilter);
+$pagination = paginate($totalItems, $currentPage, $perPage);
+$questions = Question::getPaginated($search, $bankFilter, $pagination['perPage'], $pagination['offset']);
 $questionBanks = QuestionBank::getAll();
 
 $pageTitle = 'Questions';

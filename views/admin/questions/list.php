@@ -1,7 +1,7 @@
 <!-- Questions List View -->
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="bi bi-question-circle me-2"></i>Questions</h2>
+    <h1 class="m-0" style="font-weight: 700; font-size: 1.75rem;">Questions</h1>
     <a href="<?= url('admin/questions.php?action=create' . ($bankFilter ? '&bank_id=' . e($bankFilter) : '')) ?>" class="btn btn-primary">
         <i class="bi bi-plus-lg me-1"></i>Add Question
     </a>
@@ -65,7 +65,7 @@
                     <tbody>
                         <?php foreach ($questions as $i => $q): ?>
                             <tr>
-                                <td><?= $i + 1 ?></td>
+                                <td><?= $pagination['offset'] + $i + 1 ?></td>
                                 <td>
                                     <strong><?= e(mb_strimwidth($q['question_text'], 0, 100, '...')) ?></strong>
                                     <br>
@@ -104,8 +104,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card-footer text-muted">
-                <small>Showing <?= count($questions) ?> question(s)</small>
+            <div class="card-footer p-0">
+                <?php require VIEWS_PATH . '/layout/pagination.php'; ?>
             </div>
         <?php endif; ?>
     </div>
