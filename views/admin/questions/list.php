@@ -2,9 +2,14 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="m-0" style="font-weight: 700; font-size: 1.75rem;">Questions</h1>
-    <a href="<?= url('admin/questions.php?action=create' . ($bankFilter ? '&bank_id=' . e($bankFilter) : '')) ?>" class="btn btn-primary">
-        <i class="bi bi-plus-lg me-1"></i>Add Question
-    </a>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#aiGenerateModal">
+            <i class="bi bi-stars me-1"></i>Generate via AI
+        </button>
+        <a href="<?= url('admin/questions.php?action=create' . ($bankFilter ? '&bank_id=' . e($bankFilter) : '')) ?>" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i>Add Question
+        </a>
+    </div>
 </div>
 
 <!-- Search & Filter -->
@@ -110,3 +115,96 @@
         <?php endif; ?>
     </div>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- AI Generate Modal                                          -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="aiGenerateModal" tabindex="-1" aria-labelledby="aiGenerateModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="aiGenerateModalLabel">
+                    <i class="bi bi-stars me-1 text-primary"></i>Generate Questions via AI
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Error Alert -->
+                <div class="alert alert-danger d-none" id="aiErrorAlert" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                    <span id="aiErrorText"></span>
+                </div>
+
+                <!-- ── State 1: Upload Form ─────────────────── -->
+                <div id="aiFormState">
+                    <form id="aiGenerateForm">
+                        <div class="mb-3">
+                            <label for="aiBankId" class="form-label fw-semibold">Question Bank <span class="text-danger">*</span></label>
+                            <select class="form-select" id="aiBankId" required>
+                                <option value="">— Select a Question Bank —</option>
+                                <?php foreach ($questionBanks as $qb): ?>
+                                    <option value="<?= $qb['id'] ?>">
+                                        <?= e($qb['title']) ?> (<?= e($qb['organization_name']) ?>)
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="aiPdfFile" class="form-label fw-semibold">Learning Material (PDF) <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="aiPdfFile" accept=".pdf" required>
+                            <div class="form-text">Upload a PDF document. Max 20 MB.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="aiNumQuestions" class="form-label fw-semibold">Number of Questions</label>
+                            <input type="number" class="form-control" id="aiNumQuestions" 
+                                   value="10" min="1" max="50" style="max-width: 120px;">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-stars me-1"></i>Generate Questions
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ── State 2: Loading Spinner ─────────────── -->
+                <div id="aiLoadingState" class="d-none text-center py-5">
+                    <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted fs-5 mb-1">Analyzing document &amp; generating questions...</p>
+                    <p class="text-muted small">This may take up to a minute depending on the document size.</p>
+                </div>
+
+                <!-- ── State 3: Review & Edit ───────────────── -->
+                <div id="aiReviewState" class="d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <span class="badge bg-primary fs-6 me-2"><span id="aiReviewCount">0</span> questions</span>
+                            <span class="text-muted">Review and edit before saving</span>
+                        </div>
+                    </div>
+                    <div id="aiReviewContainer">
+                        <!-- Dynamically generated question cards -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review state footer (only visible during review) -->
+            <div class="modal-footer" id="aiReviewFooter" style="display: none;">
+                <button type="button" class="btn btn-outline-secondary" id="aiCancelReview">
+                    <i class="bi bi-arrow-left me-1"></i>Start Over
+                </button>
+                <button type="button" class="btn btn-success" id="aiSaveAllBtn">
+                    <i class="bi bi-check-lg me-1"></i>Save All Questions
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AI Generate JS Config -->
+<script>
+    const AI_GENERATE_URL = '<?= url("admin/api_generate_questions.php") ?>';
+    const AI_SAVE_URL     = '<?= url("admin/api_save_questions.php") ?>';
+</script>
+

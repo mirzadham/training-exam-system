@@ -15,5 +15,6 @@
 
 <!-- Custom JS -->
 <script src="<?= asset('js/app.js') ?>?v=<?= filemtime(__DIR__ . '/../../assets/js/app.js') ?>"></script>
+<script src="<?= asset('js/ai-generate.js') ?>?v=<?= filemtime(__DIR__ . '/../../assets/js/ai-generate.js') ?>"></script>
 </body>
 </html>
