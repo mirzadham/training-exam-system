@@ -95,11 +95,10 @@ $requestBody = json_encode([
             'role'    => 'user',
             'content' => [
                 [
-                    'type'      => 'file',
-                    'file'      => [
-                        'filename' => $file['name'],
-                        'content_type' => 'application/pdf',
-                        'data'     => $base64Pdf,
+                    'type' => 'file',
+                    'file' => [
+                        'filename'  => $file['name'],
+                        'file_data' => $dataUrl,
                     ],
                 ],
                 [
@@ -107,6 +106,12 @@ $requestBody = json_encode([
                     'text' => "Generate exactly {$numQuestions} multiple-choice questions from this document. Return ONLY a raw JSON array.",
                 ],
             ],
+        ],
+    ],
+    'plugins' => [
+        [
+            'id'  => 'file-parser',
+            'pdf' => ['engine' => 'cloudflare-ai'],
         ],
     ],
     'temperature' => 0.7,
