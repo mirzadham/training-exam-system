@@ -19,6 +19,7 @@ desktop.ini
 *.log
 storage/logs/*
 storage/exports/*
+storage/*.txt
 !storage/logs/.gitkeep
 !storage/exports/.gitkeep
 
