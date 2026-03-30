@@ -42,3 +42,4 @@ require_once __DIR__ . '/helpers/functions.php';
 require_once __DIR__ . '/helpers/auth.php';
 require_once __DIR__ . '/helpers/validation.php';
 require_once __DIR__ . '/helpers/pagination.php';
+require_once __DIR__ . '/helpers/mail.php';
