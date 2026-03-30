@@ -28,8 +28,13 @@ CREATE TABLE IF NOT EXISTS `organizations` (
 CREATE TABLE IF NOT EXISTS `admins` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `username` VARCHAR(100) NOT NULL UNIQUE,
+    `email` VARCHAR(255) NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL COMMENT 'Hashed with password_hash()',
     `full_name` VARCHAR(255) NULL,
+    `email_verified_at` TIMESTAMP NULL DEFAULT NULL,
+    `verification_token` VARCHAR(64) NULL DEFAULT NULL,
+    `reset_token` VARCHAR(64) NULL DEFAULT NULL,
+    `reset_token_expires_at` TIMESTAMP NULL DEFAULT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 

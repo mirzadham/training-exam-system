@@ -37,3 +37,8 @@ define('RESULT_PASS', 'pass');
 define('STATUS_IN_PROGRESS', 'in_progress');
 define('STATUS_SUBMITTED', 'submitted');
 define('STATUS_TIME_UP', 'time_up');
+
+// Admin registration
+define('ADMIN_EMAIL_DOMAIN', 'mimos.my');
+define('RESET_TOKEN_EXPIRY_MINUTES', 60);
+define('VERIFICATION_TOKEN_LENGTH', 32);
