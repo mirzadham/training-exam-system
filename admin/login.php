@@ -20,18 +20,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf($_POST['csrf_token'] ?? '')) {
         $error = 'Invalid security token. Please try again.';
     } else {
-        $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
+        $email    = $_POST['email'] ?? '';
+        $password = $_POST['password'] ?? '';
 
-    $result = AuthController::login($username, $password);
+        $result = AuthController::login($email, $password);
 
-    if ($result['success']) {
-        setFlash('success', 'Welcome back, ' . e(getAdminName()) . '!');
-        redirect(url('admin/index.php'));
-    } else {
-        $error = $result['error'];
+        if ($result['success']) {
+            setFlash('success', 'Welcome back, ' . e(getAdminName()) . '!');
+            redirect(url('admin/index.php'));
+        } else {
+            $error = $result['error'];
+        }
     }
-}
 }
 
 $pageTitle = 'Admin Login';
@@ -99,21 +99,21 @@ $pageTitle = 'Admin Login';
             <form method="POST" action="" novalidate>
                 <?= csrf_field() ?>
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="email" class="form-label">Email</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-person"></i></span>
-                        <input type="text" 
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input type="email" 
                                class="form-control" 
-                               id="username" 
-                               name="username" 
-                               value="<?= e($_POST['username'] ?? '') ?>"
-                               placeholder="Enter your username"
+                               id="email" 
+                               name="email" 
+                               value="<?= e($_POST['email'] ?? '') ?>"
+                               placeholder="Enter your @mimos.my email"
                                required 
                                autofocus>
                     </div>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
@@ -126,13 +126,30 @@ $pageTitle = 'Admin Login';
                     </div>
                 </div>
 
+                <!-- Forgot Password Link -->
+                <div class="text-end mb-4">
+                    <a href="<?= url('admin/forgot_password.php') ?>" class="text-decoration-none small">
+                        Forgot Password?
+                    </a>
+                </div>
+
                 <button type="submit" class="btn btn-primary w-100 py-2">
                     <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
                 </button>
             </form>
 
-            <!-- Back Link -->
+            <!-- Register Link -->
             <div class="text-center mt-4">
+                <span class="text-muted">Don't have an account?</span>
+                <a href="<?= url('admin/register.php') ?>" class="text-decoration-none fw-semibold ms-1">
+                    Register
+                </a>
+            </div>
+
+            <hr class="my-3">
+
+            <!-- Back Link -->
+            <div class="text-center">
                 <a href="<?= url('/') ?>" class="text-muted text-decoration-none">
                     <i class="bi bi-arrow-left me-1"></i>Back to Home
                 </a>

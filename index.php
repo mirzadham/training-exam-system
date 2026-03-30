@@ -21,8 +21,8 @@ require_once VIEWS_PATH . '/layout/header.php';
             Online training assessment and certification exam platform.<br>
             Register and take your organization's exam to get evaluated.
         </p>
-        <hr class="my-3">
-        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <hr class="mt-5 mb-5" style="border-top: 1px solid transparent;">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-2">
             <a href="<?= url('register.php') ?>" class="btn btn-primary btn-lg px-4">
                 <i class="bi bi-pencil-square me-2"></i>Register &amp; Take Exam
             </a>
