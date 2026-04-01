@@ -31,3 +31,8 @@ prompt/
 
 # Temporary files
 diff.txt
+
+# Build/Deployment artifacts
+*.zip
+*.tar.gz
+composer.phar
