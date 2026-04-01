@@ -3,8 +3,11 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="m-0" style="font-weight: 700; font-size: 1.75rem;">Questions</h1>
     <div class="d-flex gap-2">
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#aiGenerateModal">
-            <i class="bi bi-stars me-1"></i>Generate via AI
+        <button type="button" class="btn btn-outline-info" id="btnOpenImportText">
+            <i class="bi bi-clipboard-data me-1"></i>Import AI Text
+        </button>
+        <button type="button" class="btn btn-outline-primary" id="btnOpenGenerateApi">
+            <i class="bi bi-stars me-1"></i>Generate via API
         </button>
         <a href="<?= url('admin/questions.php?action=create' . ($bankFilter ? '&bank_id=' . e($bankFilter) : '')) ?>" class="btn btn-primary">
             <i class="bi bi-plus-lg me-1"></i>Add Question
@@ -136,34 +139,87 @@
                     <span id="aiErrorText"></span>
                 </div>
 
-                <!-- ── State 1: Upload Form ─────────────────── -->
+                <!-- ── State 1: Input Forms Containers ─────────────────── -->
                 <div id="aiFormState">
-                    <form id="aiGenerateForm">
-                        <div class="mb-3">
-                            <label for="aiBankId" class="form-label fw-semibold">Question Bank <span class="text-danger">*</span></label>
-                            <select class="form-select" id="aiBankId" required>
-                                <option value="">— Select a Question Bank —</option>
-                                <?php foreach ($questionBanks as $qb): ?>
-                                    <option value="<?= $qb['id'] ?>">
-                                        <?= e($qb['title']) ?> (<?= e($qb['organization_name']) ?>)
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="aiPdfFile" class="form-label fw-semibold">Learning Material (PDF) <span class="text-danger">*</span></label>
-                            <input type="file" class="form-control" id="aiPdfFile" accept=".pdf" required>
-                            <div class="form-text">Upload a PDF document. Max 20 MB.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="aiNumQuestions" class="form-label fw-semibold">Number of Questions</label>
-                            <input type="number" class="form-control" id="aiNumQuestions" 
-                                   value="10" min="1" max="50" style="max-width: 120px;">
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-stars me-1"></i>Generate Questions
-                        </button>
-                    </form>
+                    
+                    <!-- PDF Upload Form -->
+                    <div id="aiFormStatePdf">
+                        <form id="aiGenerateForm">
+                            <div class="mb-3">
+                                <label for="aiBankId" class="form-label fw-semibold">Question Bank <span class="text-danger">*</span></label>
+                                <select class="form-select" id="aiBankId" required>
+                                    <option value="">— Select a Question Bank —</option>
+                                    <?php foreach ($questionBanks as $qb): ?>
+                                        <option value="<?= $qb['id'] ?>">
+                                            <?= e($qb['title']) ?> (<?= e($qb['organization_name']) ?>)
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="aiPdfFile" class="form-label fw-semibold">Learning Material (PDF) <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" id="aiPdfFile" accept=".pdf" required>
+                                <div class="form-text">Upload a PDF document. Max 20 MB.</div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="aiNumQuestions" class="form-label fw-semibold">Number of Questions</label>
+                                <input type="number" class="form-control" id="aiNumQuestions" 
+                                       value="10" min="1" max="50" style="max-width: 120px;">
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-stars me-1"></i>Generate Questions
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Paste AI Text Form -->
+                    <div id="aiFormStateText" class="d-none">
+                        <form id="aiImportTextForm">
+                            <div class="mb-3">
+                                <label for="aiImportBankId" class="form-label fw-semibold">Question Bank <span class="text-danger">*</span></label>
+                                <select class="form-select" id="aiImportBankId" required>
+                                    <option value="">— Select a Question Bank —</option>
+                                    <?php foreach ($questionBanks as $qb): ?>
+                                        <option value="<?= $qb['id'] ?>">
+                                            <?= e($qb['title']) ?> (<?= e($qb['organization_name']) ?>)
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3 p-3 bg-light border rounded">
+                                <p class="mb-2 fw-semibold"><i class="bi bi-info-circle me-1"></i>How to use this:</p>
+                                <ol class="mb-2 small">
+                                    <li>Copy the prompt below.</li>
+                                    <li>Paste it into ChatGPT, Claude, or Gemini along with your learning materials.</li>
+                                    <li>Copy the AI's response and paste it into the text box below.</li>
+                                </ol>
+                                <div class="mb-2">
+                                    <textarea class="form-control bg-white text-sm" id="aiPromptTemplate" rows="4" readonly>Generate 10 multiple-choice questions based on this topic. MUST use exactly this format for each question, separated by a blank line. Do not include markdown formatting:
+Q: [Question Text]
+A: [Option A]
+B: [Option B]
+C: [Option C]
+D: [Option D]
+Answer: [A, B, C, or D]
+Explanation: [Optional explanation]</textarea>
+                                </div>
+                                <button class="btn btn-sm btn-outline-secondary" type="button" id="copyPromptBtn" title="Copy Prompt">
+                                    <i class="bi bi-clipboard"></i> Copy Prompt
+                                </button>
+                                <div id="copySuccessMsg" class="form-text text-success d-none d-inline-block ms-2 pt-1"><i class="bi bi-check-circle-fill me-1"></i>Copied to clipboard!</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="aiRawText" class="form-label fw-semibold">Paste AI Output Here <span class="text-danger">*</span></label>
+                                <textarea class="form-control font-monospace text-sm" id="aiRawText" rows="6" required placeholder="Q: What is the capital of France?&#10;A: Berlin&#10;B: Paris&#10;C: Madrid&#10;D: Rome&#10;Answer: B"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-arrow-right-circle me-1"></i>Parse & Review Questions
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 <!-- ── State 2: Loading Spinner ─────────────── -->

@@ -19,15 +19,46 @@ document.addEventListener('DOMContentLoaded', function () {
     const errorAlert       = document.getElementById('aiErrorAlert');
     const errorText        = document.getElementById('aiErrorText');
     const generateForm     = document.getElementById('aiGenerateForm');
+    const importTextForm   = document.getElementById('aiImportTextForm');
+    const copyPromptBtn    = document.getElementById('copyPromptBtn');
+    const promptTemplate   = document.getElementById('aiPromptTemplate');
+    const copySuccessMsg   = document.getElementById('copySuccessMsg');
     const reviewContainer  = document.getElementById('aiReviewContainer');
     const reviewCount      = document.getElementById('aiReviewCount');
     const saveAllBtn       = document.getElementById('aiSaveAllBtn');
     const cancelReviewBtn  = document.getElementById('aiCancelReview');
+    const btnOpenImportText = document.getElementById('btnOpenImportText');
+    const btnOpenGenerateApi = document.getElementById('btnOpenGenerateApi');
+    const modalTitle       = document.getElementById('aiGenerateModalLabel');
+    const formStatePdf     = document.getElementById('aiFormStatePdf');
+    const formStateText    = document.getElementById('aiFormStateText');
+    
     const csrfToken        = document.getElementById('csrf_token_field')?.value 
                               || document.querySelector('input[name="csrf_token"]')?.value 
                               || '';
 
     const reviewFooter     = document.getElementById('aiReviewFooter');
+
+    // ── Open Modal Handlers ────────────────────────────────────
+    if (btnOpenGenerateApi && modal) {
+        btnOpenGenerateApi.addEventListener('click', function() {
+            modalTitle.innerHTML = '<i class="bi bi-stars me-1 text-primary"></i>Generate Questions via API';
+            if (formStatePdf) formStatePdf.classList.remove('d-none');
+            if (formStateText) formStateText.classList.add('d-none');
+            resetModal();
+            bootstrap.Modal.getOrCreateInstance(modal).show();
+        });
+    }
+
+    if (btnOpenImportText && modal) {
+        btnOpenImportText.addEventListener('click', function() {
+            modalTitle.innerHTML = '<i class="bi bi-clipboard-data me-1 text-info"></i>Import AI Text';
+            if (formStatePdf) formStatePdf.classList.add('d-none');
+            if (formStateText) formStateText.classList.remove('d-none');
+            resetModal();
+            bootstrap.Modal.getOrCreateInstance(modal).show();
+        });
+    }
 
     // ── State Management ───────────────────────────────────────
     function showState(state) {
@@ -49,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function resetModal() {
         showState(formState);
         generateForm.reset();
+        if (importTextForm) importTextForm.reset();
         reviewContainer.innerHTML = '';
         errorAlert.classList.add('d-none');
     }
@@ -114,6 +146,123 @@ document.addEventListener('DOMContentLoaded', function () {
             showError('Network error: ' + err.message);
         }
     });
+
+    // ── Copy Prompt Handler ────────────────────────────────────
+    if (copyPromptBtn && promptTemplate) {
+        copyPromptBtn.addEventListener('click', function() {
+            // Create a temporary textarea for robust copy
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = promptTemplate.value;
+            // Prevent scrolling to bottom
+            tempTextArea.style.position = 'fixed';
+            tempTextArea.style.top = '0';
+            tempTextArea.style.left = '0';
+            tempTextArea.style.opacity = '0';
+            document.body.appendChild(tempTextArea);
+            
+            tempTextArea.focus();
+            tempTextArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    copySuccessMsg.classList.remove('d-none');
+                    setTimeout(() => { copySuccessMsg.classList.add('d-none'); }, 3000);
+                } else {
+                    alert('Could not copy text automatically. Please select the text and copy it manually.');
+                }
+            } catch (err) {
+                alert('Copy failed: ' + err);
+            }
+            
+            document.body.removeChild(tempTextArea);
+        });
+    }
+
+    // ── Import Text Handler ────────────────────────────────────
+    if (importTextForm) {
+        importTextForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            errorAlert.classList.add('d-none');
+
+            const bankId = document.getElementById('aiImportBankId').value;
+            const rawText = document.getElementById('aiRawText').value;
+
+            if (!bankId) {
+                showError('Please select a question bank.');
+                return;
+            }
+            if (!rawText.trim()) {
+                showError('Please paste the AI output text.');
+                return;
+            }
+
+            try {
+                const questions = parseAIText(rawText);
+                if (questions.length === 0) {
+                    showError('Could not find any correctly formatted questions. Please ensure the output uses the required "Q:", "A:", "Answer:" format.');
+                    return;
+                }
+                
+                // Show review UI
+                renderReviewQuestions(questions, bankId);
+                showState(reviewState);
+            } catch (err) {
+                showError('Error parsing text: ' + err.message);
+            }
+        });
+    }
+
+    // ── Parse AI Text Function ─────────────────────────────────
+    function parseAIText(text) {
+        const questions = [];
+        // First try to split by large blocks
+        let blocks = text.split(/\n\s*\n/);
+        
+        // Regex patterns to match the required format
+        const qRegex = /^Q:\s*(.+)$/im;
+        const aRegex = /^A:\s*(.+)$/im;
+        const bRegex = /^B:\s*(.+)$/im;
+        const cRegex = /^C:\s*(.+)$/im;
+        const dRegex = /^D:\s*(.+)$/im;
+        const ansRegex = /^Ans(?:wer)?:\s*([A-D])/im;
+        const expRegex = /^Exp(?:lanation)?:\s*(.+)$/im;
+
+        function processBlocks(blockArray) {
+            blockArray.forEach(block => {
+                if (!block.trim()) return;
+                const qMatch = block.match(qRegex);
+                const aMatch = block.match(aRegex);
+                const bMatch = block.match(bRegex);
+                const cMatch = block.match(cRegex);
+                const dMatch = block.match(dRegex);
+                const ansMatch = block.match(ansRegex);
+                
+                if (qMatch && aMatch && bMatch && cMatch && dMatch && ansMatch) {
+                    const expMatch = block.match(expRegex);
+                    questions.push({
+                        question_text: qMatch[1].trim(),
+                        option_a: aMatch[1].trim(),
+                        option_b: bMatch[1].trim(),
+                        option_c: cMatch[1].trim(),
+                        option_d: dMatch[1].trim(),
+                        correct_option: ansMatch[1].toUpperCase(),
+                        explanation: expMatch ? expMatch[1].trim() : ''
+                    });
+                }
+            });
+        }
+
+        processBlocks(blocks);
+
+        // Fallback: If AI returned a single block without empty lines, split by "Q:"
+        if (questions.length === 0) {
+            blocks = text.split(/(?=^Q:\s*)/m);
+            processBlocks(blocks);
+        }
+
+        return questions;
+    }
 
     // ── Render Review Questions ────────────────────────────────
     function renderReviewQuestions(questions, bankId) {
