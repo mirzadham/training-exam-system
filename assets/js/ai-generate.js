@@ -150,32 +150,42 @@ document.addEventListener('DOMContentLoaded', function () {
     // ── Copy Prompt Handler ────────────────────────────────────
     if (copyPromptBtn && promptTemplate) {
         copyPromptBtn.addEventListener('click', function() {
-            // Create a temporary textarea for robust copy
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = promptTemplate.value;
-            // Prevent scrolling to bottom
-            tempTextArea.style.position = 'fixed';
-            tempTextArea.style.top = '0';
-            tempTextArea.style.left = '0';
-            tempTextArea.style.opacity = '0';
-            document.body.appendChild(tempTextArea);
-            
-            tempTextArea.focus();
-            tempTextArea.select();
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
+            // Select the visible textarea text
+            promptTemplate.select();
+            promptTemplate.setSelectionRange(0, 99999); // Mobile compatibility
+
+            function showSuccess() {
+                if (copySuccessMsg) {
                     copySuccessMsg.classList.remove('d-none');
                     setTimeout(() => { copySuccessMsg.classList.add('d-none'); }, 3000);
-                } else {
-                    alert('Could not copy text automatically. Please select the text and copy it manually.');
                 }
-            } catch (err) {
-                alert('Copy failed: ' + err);
             }
-            
-            document.body.removeChild(tempTextArea);
+
+            function fallbackCopy() {
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        showSuccess();
+                    } else {
+                        alert('Your browser blocked the automatic copy. Please press Ctrl+C or Cmd+C to copy manually while the text is highlighted.');
+                    }
+                } catch (err) {
+                    alert('Copy failed. Please copy manually.');
+                }
+            }
+
+            // Attempt to use the modern Clipboard API first if available and in secure context
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(promptTemplate.value)
+                    .then(showSuccess)
+                    .catch(err => {
+                        // If it fails (e.g., due to insecure local env), use older fallback
+                        fallbackCopy();
+                    });
+            } else {
+                // If modern API doesn't exist, use fallback
+                fallbackCopy();
+            }
         });
     }
 
