@@ -4,7 +4,7 @@
 <!-- Footer -->
 <footer class="bg-light text-center text-muted py-3 mt-auto border-top">
     <div class="container">
-        <small>&copy; <?= date('Y') ?> <?= e(APP_NAME) ?>. All rights reserved.</small>
+        <small>&copy; <?= date('Y') ?> MIMOS Academy. All rights reserved.</small>
     </div>
 </footer>
 
